@@ -1,0 +1,3629 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testimonial Prompt Generator</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons (optional) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        /* Light Theme (Default) - High Contrast */
+        --primary-color: #1d4ed8;
+        --primary-dark: #1e40af;
+        --primary-light: #3b82f6;
+        --secondary-color: #4b5563;
+        --success-color: #059669;
+        --warning-color: #d97706;
+        --danger-color: #dc2626;
+        --light-bg: #f9fafb;
+        --card-bg: #ffffff;
+        --border-color: #d1d5db;
+        --text-primary: #111827;
+        --text-secondary: #374151;
+        --text-muted: #6b7280;
+        --sidebar-bg: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+        --sidebar-text: #1f2937;
+        --sidebar-active: rgba(59, 130, 246, 0.1);
+        --body-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.15);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.2);
+        --border-radius: 8px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Dark Theme - High Contrast */
+      [data-theme="dark"] {
+        --primary-color: #3b82f6;
+        --primary-dark: #2563eb;
+        --primary-light: #60a5fa;
+        --secondary-color: #6b7280;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #f87171;
+        --light-bg: #0f172a;
+        --card-bg: #1e293b;
+        --border-color: #334155;
+        --text-primary: #f8fafc;
+        --text-secondary: #e2e8f0;
+        --text-muted: #cbd5e1;
+        --sidebar-bg: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+        --sidebar-text: #f8fafc;
+        --sidebar-active: rgba(255, 255, 255, 0.1);
+        --body-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6);
+      }
+
+      /* Dark mode specific overrides */
+      [data-theme="dark"] .info-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+      }
+
+      [data-theme="dark"] .info-card .card-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        border-bottom: 1px solid var(--border-color);
+        color: white;
+      }
+
+      [data-theme="dark"] .info-card .card-body {
+        background: var(--card-bg);
+        color: var(--text-secondary);
+      }
+
+      [data-theme="dark"] .step-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+      }
+
+      [data-theme="dark"] .collapsible {
+        background: var(--light-bg);
+        color: var(--text-primary);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      [data-theme="dark"] .collapsible:hover {
+        background: var(--card-bg);
+      }
+
+      [data-theme="dark"] .content-inner {
+        background: var(--card-bg);
+        color: var(--text-primary);
+      }
+
+      [data-theme="dark"] .form-control {
+        background: var(--light-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+      }
+
+      [data-theme="dark"] .form-control:focus {
+        background: var(--light-bg);
+        border-color: var(--primary-color);
+        color: var(--text-primary);
+        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+      }
+
+      [data-theme="dark"] .form-control::placeholder {
+        color: var(--text-muted);
+      }
+
+      [data-theme="dark"] .form-select {
+        background: var(--light-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+      }
+
+      [data-theme="dark"] .form-label {
+        color: var(--text-secondary);
+      }
+
+      /* Light mode sidebar overrides */
+      :root .sidebar {
+        border-right: 1px solid #e5e7eb;
+      }
+
+      :root .sidebar-title {
+        color: var(--text-primary);
+      }
+
+      :root .nav-section-title {
+        color: var(--text-muted);
+      }
+
+      :root .nav-link {
+        color: var(--sidebar-text);
+      }
+
+      :root .nav-link:hover {
+        background: rgba(59, 130, 246, 0.05);
+        color: var(--primary-color);
+      }
+
+      :root .nav-link.active {
+        background: var(--sidebar-active);
+        color: var(--primary-color);
+      }
+
+      :root .step-number {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      :root .scroll-indicator {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        color: var(--primary-color);
+      }
+
+      :root .scroll-indicator:hover {
+        background: rgba(59, 130, 246, 0.15);
+      }
+
+      /* Light mode Manage Testimonials styling */
+      :root #manageTestimonialsLink {
+        background: rgba(20, 184, 166, 0.1);
+        color: #0f766e;
+        border: 1px solid rgba(20, 184, 166, 0.2);
+      }
+
+      :root #manageTestimonialsLink:hover {
+        background: rgba(20, 184, 166, 0.15);
+        color: #0f766e;
+      }
+
+      :root #manageTestimonialsLink.active {
+        background: #14b8a6;
+        color: white;
+      }
+
+      /* Smooth theme transitions */
+      *, *::before, *::after {
+        transition: background-color var(--transition), 
+                    border-color var(--transition), 
+                    color var(--transition), 
+                    box-shadow var(--transition);
+      }
+
+      /* Smooth scrolling for the entire page */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Smooth scrolling for sidebar */
+      .sidebar {
+        scroll-behavior: smooth;
+      }
+
+      /* Smooth scrolling for modal content */
+      .testimonial-content {
+        scroll-behavior: smooth;
+      }
+
+      /* Smooth scrolling for main content */
+      .content-container {
+        scroll-behavior: smooth;
+      }
+
+      /* Improve scrolling performance */
+      * {
+        -webkit-overflow-scrolling: touch;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: var(--body-bg);
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        color: var(--text-primary);
+        line-height: 1.6;
+      }
+
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+        max-width: 1400px;
+        margin: 0 auto;
+        background: var(--card-bg);
+        box-shadow: var(--shadow-lg);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        width: 280px;
+        background: var(--sidebar-bg);
+        padding: 1.5rem 0 2rem 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-right: 1px solid var(--border-color);
+        z-index: 100;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .sidebar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 3px;
+        transition: background var(--transition);
+      }
+
+      .sidebar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      /* Sidebar scroll indicator */
+      .sidebar::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background: linear-gradient(transparent, var(--sidebar-bg));
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity var(--transition);
+      }
+
+      .sidebar.has-scroll::after {
+        opacity: 1;
+      }
+
+      /* Scroll indicators */
+      .scroll-indicator {
+        position: fixed;
+        left: 250px; /* 280px sidebar width - 30px offset */
+        width: 24px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all var(--transition);
+        z-index: 101;
+        backdrop-filter: blur(4px);
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .scroll-indicator.show {
+        opacity: 1;
+        animation: pulse 2s infinite;
+      }
+
+      .scroll-indicator:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .scroll-indicator-up {
+        top: 20px;
+      }
+
+      .scroll-indicator-down {
+        bottom: 20px;
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.7;
+          transform: scale(1.05);
+        }
+      }
+
+      .sidebar-header {
+        padding: 0 1.5rem 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 1.5rem;
+      }
+
+      .sidebar-title {
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0;
+        text-align: center;
+      }
+
+      .nav-section {
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+      }
+
+      .nav-section-title {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.75rem;
+        padding: 0 0.5rem;
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.25rem;
+        color: var(--sidebar-text);
+        text-decoration: none;
+        border-radius: 6px;
+        transition: var(--transition);
+        font-size: 0.875rem;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .nav-link:hover {
+        background: var(--sidebar-active);
+        color: white;
+        transform: translateX(2px);
+      }
+
+      .nav-link.active {
+        background: var(--primary-color);
+        color: white;
+        box-shadow: var(--shadow-md);
+      }
+
+      .nav-link i {
+        width: 16px;
+        text-align: center;
+        opacity: 0.8;
+      }
+
+      .step-number {
+        background: var(--primary-color);
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+        flex-shrink: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .nav-link.active .step-number {
+        background: var(--primary-light);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+      }
+
+      /* Special styling for Manage Testimonials */
+      #manageTestimonialsLink {
+        background: rgba(20, 184, 166, 0.15);
+        color: #14b8a6;
+        border: 1px solid rgba(20, 184, 166, 0.3);
+      }
+
+      #manageTestimonialsLink:hover {
+        background: rgba(20, 184, 166, 0.25);
+        color: #14b8a6;
+      }
+
+      #manageTestimonialsLink.active {
+        background: #14b8a6;
+        color: white;
+      }
+
+      /* Content Container */
+      .content-container {
+        flex: 1;
+        margin-left: 280px;
+        padding: 2rem;
+        background: var(--light-bg);
+        overflow-y: auto;
+        position: relative;
+        min-height: 100vh;
+      }
+
+      .content-container::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .content-container::-webkit-scrollbar-track {
+        background: var(--light-bg);
+      }
+
+      .content-container::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+      }
+
+      /* Header */
+      .main-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .main-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+
+      .main-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+
+      /* Cards */
+      .info-card {
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        transition: var(--transition);
+      }
+
+      .info-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-1px);
+      }
+
+      .card-header {
+        padding: 1.25rem 1.5rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        color: white;
+      }
+
+      .card-title {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .card-body {
+        padding: 1.5rem;
+      }
+
+      .card-text {
+        color: var(--text-secondary);
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      /* Step Sections */
+      .step-section {
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        transition: var(--transition);
+      }
+
+      .collapsible {
+        width: 100%;
+        padding: 1.25rem 1.5rem;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .collapsible:hover {
+        background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+        transform: translateY(-1px);
+      }
+
+      .collapsible.active {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        color: white;
+        box-shadow: var(--shadow-md);
+      }
+
+      .collapsible::after {
+        content: '+';
+        position: absolute;
+        right: 1.5rem;
+        font-size: 1.25rem;
+        font-weight: bold;
+        transition: var(--transition);
+      }
+
+      .collapsible.active::after {
+        content: '−';
+        transform: rotate(0deg);
+      }
+
+      .content {
+        padding: 0;
+        display: none;
+        background: var(--card-bg);
+        border-top: 1px solid var(--border-color);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .content.show {
+        display: block;
+        animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      @keyframes slideDown {
+        0% {
+          opacity: 0;
+          transform: translateY(-15px) scale(0.98);
+          max-height: 0;
+        }
+        50% {
+          opacity: 0.7;
+          transform: translateY(-5px) scale(0.99);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          max-height: none;
+        }
+      }
+
+      .content-inner {
+        padding: 2rem;
+      }
+
+      /* Form Styles */
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 0.875rem;
+      }
+
+      .form-control, .form-select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 0.875rem;
+        transition: var(--transition);
+        background: var(--card-bg);
+        color: var(--text-primary);
+      }
+
+      .form-control:focus, .form-select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .form-control::placeholder {
+        color: var(--text-muted);
+      }
+
+      textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: center;
+        justify-content: center;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        color: white;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .btn-secondary {
+        background: var(--secondary-color);
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background: #475569;
+        transform: translateY(-1px);
+      }
+
+      .btn-success {
+        background: var(--success-color);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: #059669;
+        transform: translateY(-1px);
+      }
+
+      .btn-danger {
+        background: var(--danger-color);
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background: #dc2626;
+        transform: translateY(-1px);
+      }
+
+      .btn-light {
+        background: var(--light-bg);
+        color: var(--text-primary);
+        border: 2px solid var(--border-color);
+      }
+
+      .btn-light:hover {
+        background: #e2e8f0;
+        transform: translateY(-1px);
+      }
+
+      /* Enhanced Manage Testimonials Section */
+      .manage-testimonials-content {
+        background: linear-gradient(135deg, rgba(20, 184, 166, 0.05), rgba(20, 184, 166, 0.02));
+        border: 1px solid rgba(20, 184, 166, 0.1);
+        border-radius: var(--border-radius);
+      }
+
+      #manageTestimonialsCollapsible {
+        background: linear-gradient(135deg, #14b8a6, #0f766e);
+        color: white;
+      }
+
+      #manageTestimonialsCollapsible:hover {
+        background: linear-gradient(135deg, #0f766e, #0d5c5c);
+      }
+
+      .testimonial-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: var(--transition);
+      }
+
+      .testimonial-section:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+      }
+
+      .section-header {
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .section-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .section-title i {
+        color: var(--success-color);
+      }
+
+      .form-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-label i {
+        color: var(--primary-color);
+      }
+
+      .button-group {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .btn-lg {
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+      }
+
+      /* Import/Export Grid */
+      .import-export-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-top: 1rem;
+      }
+
+      .export-card, .import-card {
+        background: var(--light-bg);
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        text-align: center;
+        transition: var(--transition);
+      }
+
+      .export-card:hover, .import-card:hover {
+        border-color: var(--primary-color);
+        box-shadow: var(--shadow-sm);
+        transform: translateY(-2px);
+      }
+
+      .card-icon {
+        background: var(--primary-color);
+        color: white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.5rem;
+      }
+
+      .export-card .card-icon {
+        background: var(--success-color);
+      }
+
+      .card-content h6 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .card-content p {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+      }
+
+      /* File Upload Styling */
+      .file-upload-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+
+      .file-input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .file-input + label {
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .file-input + label:hover {
+        transform: translateY(-1px);
+      }
+
+      /* Mobile responsive for import/export grid */
+      @media (max-width: 768px) {
+        .import-export-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .button-group {
+          justify-content: center;
+        }
+
+        .btn-lg {
+          width: 100%;
+        }
+      }
+
+      /* Utility Classes */
+      .text-center { text-align: center; }
+      .text-muted { color: var(--text-muted); }
+      .mb-2 { margin-bottom: 0.5rem; }
+      .mb-3 { margin-bottom: 1rem; }
+      .mb-4 { margin-bottom: 1.5rem; }
+      .mt-2 { margin-top: 0.5rem; }
+      .mt-3 { margin-top: 1rem; }
+
+      /* Mobile Navigation Toggle */
+      .mobile-nav-toggle {
+        display: none;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1001;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.75rem;
+        cursor: pointer;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+      }
+
+      .mobile-nav-toggle:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .mobile-nav-toggle i {
+        font-size: 1.25rem;
+        color: var(--text-primary);
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+        .mobile-nav-toggle {
+          display: block;
+        }
+
+        .sidebar {
+          transform: translateX(-100%);
+          transition: transform var(--transition);
+          width: 280px;
+          position: fixed;
+          z-index: 1000;
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+
+        .content-container {
+          margin-left: 0;
+          padding: 1rem;
+          padding-top: 4rem; /* Account for mobile nav toggle */
+        }
+
+        .theme-toggle-top {
+          top: 1rem;
+          right: 1rem;
+        }
+
+        .main-title {
+          font-size: 2rem;
+        }
+
+        .nav-section {
+          margin-bottom: 1rem;
+        }
+
+        .collapsible {
+          padding: 1rem;
+          font-size: 0.9rem;
+        }
+
+        .content-inner {
+          padding: 1.5rem;
+        }
+
+        /* Mobile overlay */
+        .mobile-overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 999;
+          opacity: 0;
+          transition: opacity var(--transition);
+        }
+
+        .mobile-overlay.show {
+          display: block;
+          opacity: 1;
+        }
+      }
+
+      /* Loading States */
+      .btn.loading {
+        opacity: 0.7;
+        cursor: not-allowed;
+        position: relative;
+      }
+
+      .btn.loading::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        margin: auto;
+        border: 2px solid transparent;
+        border-top-color: currentColor;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Hover Effects */
+      .hover-lift {
+        transition: var(--transition);
+      }
+
+      .hover-lift:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      /* Focus Styles for Accessibility */
+      .nav-link:focus,
+      .collapsible:focus,
+      .btn:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+      }
+
+      /* Toast Notifications */
+      .toast-container {
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        pointer-events: none;
+      }
+
+      .toast {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-left: 4px solid var(--success-color);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-lg);
+        padding: 1rem 1.5rem;
+        min-width: 300px;
+        max-width: 400px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transform: translateX(100%);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: auto;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .toast.success {
+        border-left-color: var(--success-color);
+      }
+
+      .toast.error {
+        border-left-color: var(--danger-color);
+      }
+
+      .toast.info {
+        border-left-color: var(--primary-color);
+      }
+
+      .toast-icon {
+        font-size: 1.25rem;
+        flex-shrink: 0;
+      }
+
+      .toast.success .toast-icon {
+        color: var(--success-color);
+      }
+
+      .toast.error .toast-icon {
+        color: var(--danger-color);
+      }
+
+      .toast.info .toast-icon {
+        color: var(--primary-color);
+      }
+
+      .toast-content {
+        flex: 1;
+      }
+
+      .toast-title {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0 0 0.25rem 0;
+        font-size: 0.875rem;
+      }
+
+      .toast-message {
+        color: var(--text-secondary);
+        margin: 0;
+        font-size: 0.8rem;
+        line-height: 1.4;
+      }
+
+      .toast-close {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 4px;
+        transition: var(--transition);
+        font-size: 1rem;
+      }
+
+      .toast-close:hover {
+        background: var(--light-bg);
+        color: var(--text-primary);
+      }
+
+      @media (max-width: 768px) {
+        .toast-container {
+          top: 5rem;
+          right: 1rem;
+          left: 1rem;
+        }
+
+        .toast {
+          min-width: auto;
+          max-width: none;
+        }
+      }
+
+      /* Simple Theme Toggle - Top Right */
+      .theme-toggle-top {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        z-index: 1000;
+      }
+
+      .theme-toggle-simple {
+        position: relative;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid var(--border-color);
+        background: var(--card-bg);
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+      }
+
+      .theme-toggle-simple:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .theme-toggle-simple:active {
+        transform: scale(0.95);
+      }
+
+      .theme-icon-light,
+      .theme-icon-dark {
+        position: absolute;
+        font-size: 1.25rem;
+        transition: all var(--transition);
+        color: var(--text-primary);
+      }
+
+      /* Light mode - show sun, hide moon */
+      :root .theme-icon-light {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+      }
+
+      :root .theme-icon-dark {
+        opacity: 0;
+        transform: rotate(-90deg) scale(0.8);
+      }
+
+      /* Dark mode - show moon, hide sun */
+      [data-theme="dark"] .theme-icon-light {
+        opacity: 0;
+        transform: rotate(90deg) scale(0.8);
+      }
+
+      [data-theme="dark"] .theme-icon-dark {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+      }
+
+      /* Hover effects for icons */
+      .theme-toggle-simple:hover .theme-icon-light,
+      .theme-toggle-simple:hover .theme-icon-dark {
+        color: var(--primary-color);
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 768px) {
+        .theme-toggle-top {
+          top: 1rem;
+          right: 1rem;
+        }
+        
+        .theme-toggle-simple {
+          width: 44px;
+          height: 44px;
+        }
+        
+        .theme-icon-light,
+        .theme-icon-dark {
+          font-size: 1.1rem;
+        }
+      }
+
+      /* Testimonial Preview Modal */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        padding: 2rem;
+      }
+
+      .modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal-container {
+        background: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--border-color);
+        max-width: 800px;
+        width: 100%;
+        max-height: 80vh;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+        overflow: hidden;
+      }
+
+      .modal-overlay.show .modal-container {
+        transform: scale(1);
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid var(--border-color);
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        border-radius: 12px 12px 0 0;
+      }
+
+      .modal-title {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.25rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 6px;
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-close:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .modal-body {
+        flex: 1;
+        overflow: hidden;
+        padding: 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .testimonial-content {
+        padding: 2rem;
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        font-family: 'Georgia', serif;
+        line-height: 1.7;
+        font-size: 1rem;
+        color: var(--text-primary);
+        background: var(--card-bg);
+        max-height: calc(80vh - 200px);
+        min-height: 200px;
+      }
+
+      .testimonial-content p {
+        margin-bottom: 1.5rem;
+        text-align: justify;
+        text-indent: 2rem;
+      }
+
+      .testimonial-content p:first-child {
+        text-indent: 0;
+      }
+
+      .modal-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 2rem;
+        border-top: 1px solid var(--border-color);
+        background: var(--bg-secondary);
+        border-radius: 0 0 12px 12px;
+      }
+
+      .modal-stats {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.875rem;
+        color: var(--text-muted);
+      }
+
+      .modal-stats span {
+        font-weight: 500;
+      }
+
+      .modal-stats span span {
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .modal-actions .btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        min-width: 80px;
+        justify-content: center;
+      }
+
+      /* Custom scrollbar for modal content */
+      .testimonial-content {
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary-color) var(--bg-secondary);
+      }
+
+      .testimonial-content::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      .testimonial-content::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+        border-radius: 5px;
+        margin: 10px 0;
+      }
+
+      .testimonial-content::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 5px;
+        border: 2px solid var(--card-bg);
+        transition: background var(--transition);
+      }
+
+      .testimonial-content::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-dark);
+      }
+
+      .testimonial-content::-webkit-scrollbar-thumb:active {
+        background: var(--primary-light);
+      }
+
+      /* Dark mode overrides for modal */
+      [data-theme="dark"] .modal-container {
+        background: var(--card-bg);
+        border-color: var(--border-color);
+      }
+
+      [data-theme="dark"] .testimonial-content {
+        background: var(--card-bg);
+        color: var(--text-primary);
+      }
+
+      [data-theme="dark"] .modal-footer {
+        background: var(--light-bg);
+        border-color: var(--border-color);
+      }
+
+      /* Mobile responsive scroll indicators */
+      @media (max-width: 768px) {
+        .scroll-indicator {
+          display: none; /* Hide scroll indicators on mobile for simplicity */
+        }
+      }
+
+      /* Mobile responsive modal */
+      @media (max-width: 768px) {
+        .modal-overlay {
+          padding: 1rem;
+        }
+
+        .modal-container {
+          max-height: 85vh;
+          max-width: 100%;
+        }
+
+        .modal-header {
+          padding: 1rem 1.5rem;
+        }
+
+        .modal-title {
+          font-size: 1.1rem;
+        }
+
+        .testimonial-content {
+          padding: 1.5rem;
+          font-size: 0.95rem;
+          max-height: calc(85vh - 180px);
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-footer {
+          padding: 1rem 1.5rem;
+          flex-direction: column;
+          gap: 1rem;
+          align-items: center;
+        }
+
+        .modal-stats {
+          justify-content: center;
+        }
+
+        .modal-actions {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .modal-actions .btn {
+          flex: 1;
+          max-width: 120px;
+        }
+      }
+
+      /* Theme transition animation */
+      .theme-transition {
+        animation: themeChange 0.6s ease-in-out;
+      }
+
+      @keyframes themeChange {
+        0% { opacity: 1; }
+        50% { opacity: 0.7; }
+        100% { opacity: 1; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Testimonial Preview Modal -->
+    <div class="modal-overlay" id="testimonialModal">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="bi bi-eye"></i>
+            Testimonial Preview
+          </h3>
+          <button class="modal-close" onclick="closeTestimonialModal()">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="testimonial-content" id="modalTestimonialContent">
+            <!-- Testimonial content will be loaded here -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="modal-stats">
+            <span class="word-count">Words: <span id="modalWordCount">0</span></span>
+            <span class="char-count">Characters: <span id="modalCharCount">0</span></span>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-primary" onclick="copyModalTestimonial()">
+              <i class="bi bi-clipboard"></i>
+              Copy
+            </button>
+            <button class="btn btn-secondary" onclick="closeTestimonialModal()">
+              <i class="bi bi-x-circle"></i>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Toggle -->
+    <button class="mobile-nav-toggle" id="mobileNavToggle" onclick="toggleMobileNav()">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+
+    <div class="app-container">
+    <!-- Sidebar -->
+    <!-- Scroll Indicators (outside sidebar for fixed positioning) -->
+    <div class="scroll-indicator scroll-indicator-up" id="scrollIndicatorUp">
+      <i class="bi bi-chevron-up"></i>
+    </div>
+    <div class="scroll-indicator scroll-indicator-down" id="scrollIndicatorDown">
+      <i class="bi bi-chevron-down"></i>
+    </div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h5 class="sidebar-title">Navigation</h5>
+        </div>
+        
+        <!-- Content Generation Section -->
+        <div class="nav-section">
+          <div class="nav-section-title">Content Generation</div>
+          <button class="nav-link" id="step1Link" onclick="openStep(0)">
+            <span class="step-number">1a</span>
+            <span>Academic Paragraph</span>
+          </button>
+          <button class="nav-link" id="step2Link" onclick="openStep(1)">
+            <span class="step-number">1b</span>
+            <span>Academic Paragraph</span>
+          </button>
+          <button class="nav-link" id="step3aLink" onclick="openStep(2)">
+            <span class="step-number">2a</span>
+            <span>CCA Paragraph</span>
+          </button>
+          <button class="nav-link" id="step3bLink" onclick="openStep(3)">
+            <span class="step-number">2b</span>
+            <span>CCA Paragraph</span>
+          </button>
+          <button class="nav-link" id="step4aLink" onclick="openStep(4)">
+            <span class="step-number">3a</span>
+            <span>Leadership</span>
+          </button>
+          <button class="nav-link" id="step4bLink" onclick="openStep(5)">
+            <span class="step-number">3b</span>
+            <span>Leadership</span>
+          </button>
+          <button class="nav-link" id="step5aLink" onclick="openStep(6)">
+            <span class="step-number">4a</span>
+            <span>VIA Paragraph</span>
+          </button>
+          <button class="nav-link" id="step5bLink" onclick="openStep(7)">
+            <span class="step-number">4b</span>
+            <span>VIA Paragraph</span>
+          </button>
+        </div>
+
+        <!-- Structure Building Section -->
+        <div class="nav-section">
+          <div class="nav-section-title">Structure Building</div>
+          <button class="nav-link" id="step6Link" onclick="openStep(8)">
+            <span class="step-number">5</span>
+            <span>Introductory Paragraph</span>
+          </button>
+          <button class="nav-link" id="step7Link" onclick="openStep(9)">
+            <span class="step-number">6</span>
+            <span>Concluding Paragraph</span>
+          </button>
+          <button class="nav-link" id="step8Link" onclick="openStep(10)">
+            <span class="step-number">7</span>
+            <span>Consolidation</span>
+          </button>
+        </div>
+
+        <!-- Quality Assurance Section -->
+        <div class="nav-section">
+          <div class="nav-section-title">Quality Assurance</div>
+          <button class="nav-link" id="step9Link" onclick="openStep(11)">
+            <span class="step-number">8</span>
+            <span>Accuracy Check</span>
+          </button>
+          <button class="nav-link" id="step10Link" onclick="openStep(12)">
+            <span class="step-number">9</span>
+            <span>AI Consolidation</span>
+          </button>
+          <button class="nav-link" id="step11Link" onclick="openStep(13)">
+            <span class="step-number">10a</span>
+            <span>Semi-Final Check</span>
+          </button>
+          <button class="nav-link" id="step12Link" onclick="openStep(14)">
+            <span class="step-number">10b</span>
+            <span>Final AI Check</span>
+          </button>
+        </div>
+
+        <!-- Final Review Section -->
+        <div class="nav-section">
+          <div class="nav-section-title">Final Review</div>
+          <button class="nav-link" id="step13Link" onclick="openStep(15)">
+            <span class="step-number">11</span>
+            <span>Human Check</span>
+          </button>
+        </div>
+
+        <!-- Management Section -->
+        <div class="nav-section">
+          <div class="nav-section-title">Management</div>
+          <button class="nav-link" id="manageTestimonialsLink" onclick="openStep(16)">
+            <i class="bi bi-journal-text"></i>
+            <span>Manage Testimonials</span>
+          </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content-container">
+        <!-- Theme Toggle - Top Right -->
+        <div class="theme-toggle-top">
+          <button class="theme-toggle-simple" id="themeToggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+            <i class="bi bi-sun-fill theme-icon-light"></i>
+            <i class="bi bi-moon-fill theme-icon-dark"></i>
+          </button>
+        </div>
+
+        <div class="main-header">
+          <h1 class="main-title">Testimonial Prompt Generator</h1>
+          <p class="main-subtitle">Create personalized testimonial prompts with AI assistance</p>
+        </div>
+
+
+        <!-- Description Card -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-info-circle"></i>
+              What is this?
+            </h5>
+          </div>
+        <div class="card-body">
+          <p class="card-text">
+            The Testimonial Prompt Generator allows users to gather information
+            from the teacher's input, the student's RI Journey, and CCA records
+            to create AI prompts. These prompts can then be used to draft
+            personalised testimonial paragraphs for our students, using Pair or
+            other GovTech approved platforms.
+              <br><br>
+              The "Manage Testimonials" section also allows you to upload segments of
+              testimonials for reference during your writing process.
+          </p>
+        </div>
+      </div>
+
+        <!-- Instruction Card -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-list-check"></i>
+              Instructions
+            </h5>
+          </div>
+        <div class="card-body">
+          <p class="card-text">
+              Before you begin, please review the student's RI Journey and CCA
+            Record to gain a clear understanding of their achievements and
+            involvement over the past two years. Identify a few personal
+            highlights, such as positive feedback from CCA teachers, to ensure
+              these are reflected in the final testimonial.
+              <br><br>
+              <strong>The more specific and personal the information included about the
+              student's time in RI, the better the final result will be.</strong>
+              <br><br>
+              <strong>Note:</strong> If you believe the student tends to exaggerate or embellish
+            their contributions in their RI Journey, approach their reflections
+            with caution and use your judgment to moderate the generated
+              testimonial accordingly.
+              <br><br>
+              Please use <a href="https://pair.gov.sg/login" target="_blank" class="text-primary">Pair</a> for
+            your testimonial writing (Access it with your SSOE device with the
+              SSOE network or with VPN).
+          </p>
+        </div>
+      </div>
+
+        <!-- Step 1a -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">1a</span>
+            Step 1a: Academic Paragraph
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="form-group">
+          <label for="gender1" class="form-label">Select Gender:</label>
+          <select id="gender1" class="form-select">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+              <div class="form-group">
+                <label for="journey1" class="form-label">Information about the student's academic work:</label>
+          <textarea
+            id="journey1"
+            rows="4"
+            class="form-control"
+                  placeholder="- Teacher's assessment of the student's learning dispositions&#10;- Student's reflections from the RI Journey&#10;- Any relevant information from the student's CCA records, e.g. academic competitions"
+          ></textarea>
+        </div>
+              <div class="form-group">
+          <button class="btn btn-primary" onclick="prepareAndGenerateText1(1)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+              <div class="form-group">
+          <label for="output1" class="form-label">Generated Prompt:</label>
+          <textarea id="output1" rows="6" class="form-control"></textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(1)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 1b -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">1b</span>
+            Step 1b: Academic Paragraph
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="form-group">
+          <label for="input2-1" class="form-label">Reference Paragraph:</label>
+          <textarea
+            id="input2-1"
+            rows="4"
+            class="form-control"
+            placeholder="Please input an academic paragraph from your own past testimonials OR from an exemplar testimonial"
+          ></textarea>
+        </div>
+              <div class="form-group">
+          <button class="btn btn-primary" onclick="prepareAndGenerateText2(2)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+              <div class="form-group">
+          <label for="output2" class="form-label">Generated Prompt:</label>
+          <textarea id="output2" rows="4" class="form-control"></textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(2)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 2a -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">2a</span>
+            Step 2a: CCA Paragraph
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="info-card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title">
+                    <i class="bi bi-lightbulb"></i>
+                    Note
+                  </h5>
+                </div>
+          <div class="card-body">
+            <p class="card-text">
+              If the student has done a lot within their CCAs, consider
+              including two CCA paragraphs. Remember to edit the prompt to
+                    reflect <strong>two</strong> testimonial paragraphs, and word count to be
+                    within <strong>200-350</strong> words.
+            </p>
+          </div>
+        </div>
+
+              <div class="form-group">
+                <label for="input3-1" class="form-label">Information about the student's CCA experience:</label>
+          <textarea
+            id="input3-1"
+            rows="4"
+            class="form-control"
+                  placeholder="- Student's reflections from the RI Journey&#10;- Any relevant information from the student's CCA records, e.g. competitions&#10;- Any relevant feedback from CCA teachers"
+          ></textarea>
+        </div>
+              <div class="form-group">
+          <button class="btn btn-primary" onclick="prepareAndGenerateText3(3)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+              <div class="form-group">
+          <label for="output3" class="form-label">Generated Prompt:</label>
+          <textarea id="output3" rows="4" class="form-control"></textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(3)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 2b -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">2b</span>
+            Step 2b: CCA Paragraph
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="info-card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title">
+                    <i class="bi bi-lightbulb"></i>
+                    Note
+                  </h5>
+                </div>
+          <div class="card-body">
+            <p class="card-text">
+              If the student has done a lot within their CCAs, consider
+              including two CCA paragraphs. Remember to edit the prompt to
+                    reflect <strong>two</strong> testimonial paragraphs, and word count to be
+                    within <strong>200-350</strong> words.
+            </p>
+          </div>
+        </div>
+
+              <div class="form-group">
+          <label for="input4-1" class="form-label">Reference Paragraph:</label>
+          <textarea
+            id="input4-1"
+            rows="4"
+            class="form-control"
+            placeholder="Please input a CCA paragraph from your own past testimonials OR from an exemplar testimonial"
+          ></textarea>
+        </div>
+              <div class="form-group">
+          <button class="btn btn-primary" onclick="prepareAndGenerateText4(4)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+              <div class="form-group">
+          <label for="output4" class="form-label">Generated Prompt:</label>
+          <textarea id="output4" rows="4" class="form-control"></textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(4)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 3a -->
+        <div class="step-section">
+      <button class="collapsible">
+            <span class="step-number">3a</span>
+        Step 3a: Leadership Paragraph (optional)
+      </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="form-group">
+                <label for="input5-1" class="form-label">Information about the student's leadership experience:</label>
+          <textarea
+            id="input5-1"
+            rows="4"
+            class="form-control"
+                  placeholder="- Student's reflections from the RI Journey&#10;- Any relevant information from the student's CCA records, e.g. competitions&#10;- Any relevant feedback from teachers"
+          ></textarea>
+        </div>
+              <div class="form-group">
+          <button class="btn btn-primary" onclick="prepareAndGenerateText5(5)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+              <div class="form-group">
+          <label for="output5" class="form-label">Generated Prompt:</label>
+          <textarea id="output5" rows="4" class="form-control"></textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(5)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 3b -->
+        <div class="step-section">
+      <button class="collapsible">
+            <span class="step-number">3b</span>
+        Step 3b: Leadership Paragraph (optional)
+      </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="form-group">
+          <label for="input6-1" class="form-label">Reference Paragraph:</label>
+          <textarea
+            id="input6-1"
+            rows="4"
+            class="form-control"
+            placeholder="Please input a leadership paragraph from your own past testimonials OR from an exemplar testimonial"
+          ></textarea>
+        </div>
+              <div class="form-group">
+          <button class="btn btn-primary" onclick="prepareAndGenerateText6(6)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+              <div class="form-group">
+          <label for="output6" class="form-label">Generated Prompt:</label>
+          <textarea id="output6" rows="4" class="form-control"></textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(6)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 4a -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">4a</span>
+            Step 4a: VIA Paragraph (optional)
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="form-group">
+                <label for="input7-1" class="form-label">Information about the student's VIA experience:</label>
+          <textarea
+            id="input7-1"
+            rows="4"
+            class="form-control"
+                  placeholder="- Student's reflections from the RI Journey&#10;- Any relevant information from the student's CCA records, e.g. advocacy campaigns&#10;- Any relevant feedback from teachers"
+          ></textarea>
+        </div>
+              <div class="form-group">
+          <button class="btn btn-primary" onclick="prepareAndGenerateText7(7)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+              <div class="form-group">
+          <label for="output7" class="form-label">Generated Prompt:</label>
+          <textarea id="output7" rows="4" class="form-control"></textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(7)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 4b -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">4b</span>
+            Step 4b: VIA Paragraph (optional)
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="form-group">
+          <label for="input8-1" class="form-label">Sample VIA Paragraph:</label>
+          <textarea
+            id="input8-1"
+            rows="4"
+            class="form-control"
+            placeholder="Please input an VIA paragraph from your own past testimonials OR from an exemplar testimonial"
+          ></textarea>
+        </div>
+              <div class="form-group">
+          <button class="btn btn-primary" onclick="prepareAndGenerateText8(8)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+              <div class="form-group">
+          <label for="output8" class="form-label">Generated Prompt:</label>
+          <textarea id="output8" rows="4" class="form-control"></textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(8)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 5 -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">5</span>
+            Step 5: Introductory Paragraph
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="form-group">
+          <label for="input9-1" class="form-label">Select Gender:</label>
+          <select id="input9-1" class="form-select">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+              <div class="form-group">
+          <label for="input9-2" class="form-label">Reference Paragraph:</label>
+          <textarea
+            id="input9-2"
+            rows="4"
+            class="form-control"
+            placeholder="Please input an introductory paragraph from your own past testimonials OR from an exemplar testimonial that reflects the student's overall performance (Exceptional/Very Good/Average)."
+          ></textarea>
+        </div>
+
+              <div class="form-group">
+          <button class="btn btn-primary" onclick="prepareAndGenerateText9(9)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+              <div class="form-group">
+                <label for="output9" class="form-label">Generated Introductory Paragraph:</label>
+          <textarea id="output9" rows="4" class="form-control"></textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(9)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 6 -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">6</span>
+            Step 6: Concluding Paragraph
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="form-group">
+          <label for="input10-1" class="form-label">Reference Paragraph:</label>
+          <textarea
+            id="input10-1"
+            rows="4"
+            class="form-control"
+            placeholder="Please input an concluding paragraph from your own past testimonials OR from an exemplar testimonial that reflects the student's overall performance (Exceptional/Very Good/Average)."
+          ></textarea>
+        </div>
+              <div class="form-group">
+                <button class="btn btn-primary" onclick="prepareAndGenerateText10(10)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+              <div class="form-group">
+          <label for="output10" class="form-label">Generated Prompt:</label>
+          <textarea id="output10" rows="4" class="form-control"></textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(10)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">7</span>
+            Step 7: Consolidation of Testimonial
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="form-group">
+                <label for="output11" class="form-label">Generated Final AI Check Output:</label>
+          <textarea id="output11" rows="4" class="form-control">
+Please consolidate the paragraphs into a coherent testimonial, starting with the introductory paragraph, followed by the academic paragraph, then co-curricular paragraph, then leadership paragraph (if any), then VIA paragraph (if any), concluding with the concluding paragraph. Please make sure that, apart from the concluding paragraph, that all the other paragraphs are written in past tense.
+                </textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(11)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 8 -->
+        <div class="step-section">
+      <button class="collapsible">
+            <span class="step-number">8</span>
+        Step 8: Accomplishment Level Accuracy Check (optional)
+      </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="info-card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title">
+                    <i class="bi bi-lightbulb"></i>
+                    Note
+                  </h5>
+                </div>
+          <div class="card-body">
+            <p class="card-text">
+              If you find that the testimonial generated is too bombastic, you
+              may wish to adjust it for a more moderate and accurate
+              testimonial.
+                    <br><br>Adjusting by 20% makes for a more moderate testimonial
+              and helps to reflect a more average student. Adjusting by 50%
+              makes the testimonial seem quite factual and may be suited for
+              students who did not contribute much. Do toggle around with the
+              percentage to obtain the level that reflects the student
+              accurately.
+            </p>
+          </div>
+        </div>
+
+              <div class="form-group">
+                <label for="output12" class="form-label">Generated Final AI Check Output:</label>
+          <textarea id="output12" rows="3" class="form-control">
+The testimonial is a bit inflated in its writing, and makes the student sound a bit more accomplished than he really is. In truth he was quite an average student. Could you reduce the level of accomplishment by about 20% please?
+                </textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(12)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 9 -->
+        <div class="step-section">
+      <button class="collapsible">
+            <span class="step-number">9</span>
+        Step 9: AI consolidation of personalised observations
+      </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="info-card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    Do this first
+                  </h5>
+                </div>
+          <div class="card-body">
+            <p class="card-text">
+              Please copy and paste the consolidated testimonial into a WinWord
+              document, and manually input all personalised observations of the
+              student. Look through the entire testimonial to check for
+              inaccuracies or awkward phrases that you want to correct.
+                    <br><br><strong style="color: var(--danger-color)">
+                      Once you are done, paste the personalised testimonial back into
+                      the AI system.
+                    </strong>
+            </p>
+          </div>
+        </div>
+
+              <div class="form-group">
+          <label for="input13-1" class="form-label">Edited Testimonial:</label>
+          <textarea
+            id="input13-1"
+            rows="4"
+            class="form-control"
+            placeholder="Please paste the personalised testimonial back here"
+          ></textarea>
+        </div>
+
+              <div class="form-group">
+                <button class="btn btn-primary" onclick="prepareAndGenerateText11(13)">
+                  <i class="bi bi-magic"></i>
+            Generate Prompt
+          </button>
+        </div>
+
+              <div class="form-group">
+                <label for="output13" class="form-label">Generated AI Check Output:</label>
+          <textarea id="output13" rows="10" class="form-control"> </textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(13)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 10a -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">10a</span>
+            Step 10a: Semi-Final AI Check
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="info-card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title">
+                    <i class="bi bi-lightbulb"></i>
+                    Note
+                  </h5>
+                </div>
+          <div class="card-body">
+            <p class="card-text">
+              The prompts suggested here may not fully capture the entire list
+                    of Don'ts in the Testimonial Guide. Please refer to it for a final
+              check.
+            </p>
+          </div>
+        </div>
+
+              <div class="form-group">
+                <label for="output14" class="form-label">Generated AI Check Output:</label>
+          <textarea id="output14" rows="10" class="form-control">
+Please also review the testimonial and identify any errors based on the criteria below. Highlight or bold the errors in the text: 
+
+1. Negative Remarks: Do not include any negative or implied negative remarks.
+2. Comparisons: Avoid comparisons, explicit or implicit, that are at the expense of other students.
+3. Career Choices: Do not mention any possible career choices.
+4. Descriptive Lists: Avoid simply listing accomplishments without context or relevance.
+5. Contextual Information: Ensure there is sufficient context for all statements. Do not omit necessary details.
+6. First-Person Pronouns: Do not use first-person pronouns (e.g., "I," "we").
+7. Tense Usage: Use past tense unless discussing enduring traits, in which case present or present perfect tense is acceptable.
+8. Adjectival Phrases: Avoid awkward adjectival phrases or those that do not logically connect to the next clause.
+9. Pronoun Consistency: Ensure pronouns are used correctly, the student's name is consistently used, and British spelling is applied.
+10. Standardization: Replace "Yr-56" or "Years 5-6" with "Year 5-6".
+11. Abbreviations: Explain abbreviations upon first use if they are used more than once throughout the text.
+12. Sentence Length: Break up sentences that are unnecessarily long.
+13. Punctuation and Hyphenation: Ensure accuracy in punctuation, hyphenated words, hyphens, and dashes.
+14. Tone: Avoid a gushing or boasting tone.
+After identifying and highlighting/bolding the errors, provide a brief summary of the types of errors found and suggest areas for improvement.
+                </textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(14)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 10b -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">10b</span>
+            Step 10b: Final AI Check
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="info-card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title">
+                    <i class="bi bi-lightbulb"></i>
+                    Note
+                  </h5>
+                </div>
+          <div class="card-body">
+            <p class="card-text">
+              The prompts suggested here may not fully capture the entire list
+                    of Don'ts in the Testimonial Guide. Please refer to it for a final
+              check.
+            </p>
+          </div>
+        </div>
+
+              <div class="form-group">
+                <label for="output15" class="form-label">Generated Final AI Check Output:</label>
+          <textarea id="output15" rows="10" class="form-control">
+Please also review the testimonial and identify any instances where the specified terms and phrases are used incorrectly. Highlight or bold the errors, and then suggest the appropriate replacements according to the guidelines below:
+
+1. Replace 'this year' and/or 'last year' with '[this_year]' and/or '[last_year]' respectively.
+2. Replace 'trainings' with 'training sessions'.
+3. Replace 'JC1 and JC2' with 'Year 5 and 6'.
+4. Replace 'College' with 'school'.
+5. Replace 'youths' with 'students'.
+6. Replace 'academics' with 'academic work'.
+7. Replace 'CIP (Community Involvement Projects)' with 'VIA (Values in Action)'.
+8. Ensure that 'additionally' and 'also' are not used in the same sentence.
+9. Avoid starting sentences with 'and' or 'because'.
+10. Replace 'Co-Curricular Activity' with 'Co-curricular Activity'
+                </textarea>
+          <button class="btn btn-secondary mt-2" onclick="copyToClipboard(15)">
+                  <i class="bi bi-clipboard"></i>
+            Copy Prompt
+          </button>
+              </div>
+            </div>
+        </div>
+      </div>
+
+        <!-- Step 11 -->
+        <div class="step-section">
+          <button class="collapsible">
+            <span class="step-number">11</span>
+            Step 11: Final Human Check
+          </button>
+          <div class="content">
+            <div class="content-inner">
+              <div class="info-card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title">
+                    <i class="bi bi-check-circle"></i>
+                    Instructions for Final Human Check
+                  </h5>
+                </div>
+          <div class="card-body">
+            <p class="card-text">
+              Teacher to consolidate the completed text into a Microsoft Word
+              document. Please do a final human check:
+            </p>
+            <form id="finalCheckForm">
+              <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="check1" />
+                <label class="form-check-label" for="check1">
+                  Correct all issues highlighted from the earlier two rounds of
+                  error checks.
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="check2" />
+                <label class="form-check-label" for="check2">
+                  Ensure that all competitions or events are named correctly.
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="check3" />
+                <label class="form-check-label" for="check3">
+                  Ensure that all qualities mentioned in each paragraph are
+                  based on evidence (e.g., participation in event X, behaviour
+                  Y).
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="check4" />
+                <label class="form-check-label" for="check4">
+                  Ensure that the overall picture painted of the student is not
+                  bombastic and that it is also accurate.
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="check5" />
+                <label class="form-check-label" for="check5">
+                  Ensure that the overall character count does not exceed 5500
+                  characters, including spaces.
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="check6" />
+                <label class="form-check-label" for="check6">
+                  Ensure that no Common Errors (refer to the Testimonial Guide)
+                  persist.
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="check7" />
+                <label class="form-check-label" for="check7">
+                  Please carefully review the drafted testimonial to identify
+                  opportunities where you can highlight personal reflections,
+                        observations, and the student's unique contributions. This
+                  will ensure that the testimonial stands out as a personalised
+                  and meaningful account, rather than just another generic
+                  AI-generated statement.
+                </label>
+              </div>
+            </form>
+            <!-- Button to clear all checkboxes -->
+            <button class="btn btn-danger mt-3" onclick="clearCheckboxes()">
+                    <i class="bi bi-trash"></i>
+              Clear Checkboxes
+            </button>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manage Testimonials Section -->
+        <div class="step-section">
+      <button id="manageTestimonialsCollapsible" class="collapsible">
+            <span class="step-number"><i class="bi bi-journal-text"></i></span>
+        Manage Testimonials
+      </button>
+          <div class="content">
+            <div class="content-inner manage-testimonials-content">
+              <!-- Info Card -->
+              <div class="info-card mb-4">
+                <div class="card-header" style="background: linear-gradient(135deg, #14b8a6, #0f766e);">
+                  <h5 class="card-title">
+                    <i class="bi bi-info-circle"></i>
+                    Testimonial Library
+                  </h5>
+                </div>
+          <div class="card-body">
+            <p class="card-text">
+                    Store and organize testimonial segments, full testimonials, or examples for quick reference.
+                    All testimonials are saved locally in your browser and can be exported for backup.
+            </p>
+          </div>
+        </div>
+
+              <!-- Create New Testimonial -->
+              <div class="testimonial-section mb-4">
+                <div class="section-header">
+                  <h6 class="section-title">
+                    <i class="bi bi-plus-circle"></i>
+                    Create New Testimonial
+                  </h6>
+                </div>
+                
+                <div class="form-group">
+                  <label for="testimonialTag" class="form-label">
+                    <i class="bi bi-tag"></i>
+                    Tag/Description
+                  </label>
+          <input
+            type="text"
+            id="testimonialTag"
+            class="form-control"
+                    placeholder="e.g., John_Doe_2024, Exemplar_Leadership, Academic_Template"
+          />
+        </div>
+                
+                <div class="form-group">
+                  <label for="testimonialText" class="form-label">
+                    <i class="bi bi-file-text"></i>
+                    Testimonial Content
+                  </label>
+          <textarea
+            id="testimonialText"
+                    rows="6"
+            class="form-control"
+                    placeholder="Enter your testimonial text here..."
+          ></textarea>
+                  <small class="form-text text-muted">
+                    <i class="bi bi-shield-check"></i>
+                    Saved locally in your browser - export regularly for backup
+                  </small>
+        </div>
+                
+                <button class="btn btn-primary btn-lg" onclick="saveTestimonial()">
+                  <i class="bi bi-floppy"></i>
+            Save Testimonial
+          </button>
+              </div>
+
+              <!-- Manage Existing Testimonials -->
+              <div class="testimonial-section mb-4">
+                <div class="section-header">
+                  <h6 class="section-title">
+                    <i class="bi bi-collection"></i>
+                    Saved Testimonials
+                  </h6>
+        </div>
+
+                <div class="form-group">
+                  <label for="savedTestimonials" class="form-label">
+                    <i class="bi bi-search"></i>
+                    Select Testimonial
+                  </label>
+          <select id="savedTestimonials" class="form-select">
+            <option value="" disabled selected>
+                      Choose a saved testimonial...
+            </option>
+          </select>
+        </div>
+
+                <div class="button-group">
+                  <button class="btn btn-outline-primary" onclick="loadTestimonial()">
+                    <i class="bi bi-eye"></i>
+                    Preview
+        </button>
+                  <button class="btn btn-outline-danger" onclick="deleteTestimonial()">
+                    <i class="bi bi-trash"></i>
+                    Delete
+        </button>
+                </div>
+              </div>
+
+              <!-- Import/Export Section -->
+              <div class="testimonial-section">
+                <div class="section-header">
+                  <h6 class="section-title">
+                    <i class="bi bi-arrow-down-up"></i>
+                    Import & Export
+                  </h6>
+        </div>
+
+                <div class="import-export-grid">
+                  <div class="export-card">
+                    <div class="card-icon">
+                      <i class="bi bi-download"></i>
+                    </div>
+                    <div class="card-content">
+                      <h6>Export All</h6>
+                      <p>Download all saved testimonials as .txt files</p>
+            <button class="btn btn-success" onclick="downloadTestimonials()">
+                        <i class="bi bi-download"></i>
+                        Export
+            </button>
+                    </div>
+                  </div>
+                  
+                  <div class="import-card">
+                    <div class="card-icon">
+                      <i class="bi bi-upload"></i>
+                    </div>
+                    <div class="card-content">
+                      <h6>Import Files</h6>
+                      <p>Upload .txt files to import testimonials</p>
+                      <div class="file-upload-wrapper">
+            <input
+              type="file"
+              id="uploadTestimonialFile"
+                          class="file-input"
+              multiple
+                          accept=".txt"
+              onchange="uploadTestimonials(event)"
+            />
+                        <label for="uploadTestimonialFile" class="btn btn-outline-primary">
+                          <i class="bi bi-upload"></i>
+                          Choose Files
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+
+      function prepareAndGenerateText1(section) {
+        // Collect values from input fields dynamically based on section
+        var gender = document.getElementById(`gender${section}`).value;
+        var journey = document.getElementById(`journey${section}`).value;
+
+        // Create the replacements array
+        var replacements = [
+          ["[gender]", gender],
+          ["[Student's RI Journey]", journey],
+        ];
+
+        // Define the template paragraph for section 1
+        var template = `You are an experienced teacher writing year-end testimonials for graduating students of college age. The testimonials should capture key qualities of each student and substantiate these qualities with examples of the student's involvements and activities in school. Do not use hyperbole or exaggerated language. The student here is [gender]; please ensure that the pronouns used are correct and kept consistent. Please use British English throughout. 
+
+From the student's reflection, teacher’s input and other information below, identify 1-2 key qualities relating to their learning disposition. Please substantiate with evidence from the reflection. 
+
+###
+
+[Student's RI Journey]
+`;
+
+        // Call generateText with the section number, replacements, and template
+        generateText(section, replacements, template);
+      }
+
+      function prepareAndGenerateText2(section) {
+        // Collect input values
+        var sampleParagraph = document.getElementById(
+          `input${section}-1`
+        ).value;
+
+        // Create the replacements array
+        var replacements = [["[sample paragraph]", sampleParagraph]];
+
+        // Define the template for the testimonial
+        var template = `Given the qualities identified, could you generate one testimonial paragraph on the student's key qualities within the realm of their learning disposition with reference to the examples that support this view? The word count should be no more than 120 words. Please also ensure that this is written in the past tense. 
+        
+Please follow the example given, keeping the same tone, style and register.
+
+###
+
+[sample paragraph]
+`;
+
+        // Generate the paragraph by replacing placeholders
+        generateText(section, replacements, template);
+      }
+
+      function prepareAndGenerateText3(section) {
+        // Collect input values
+        var studentRIJourney = document.getElementById(
+          `input${section}-1`
+        ).value;
+
+        // Create the replacements array
+        var replacements = [["[Student’s RI Journey]", studentRIJourney]];
+
+        // Define the template for the testimonial (empty for now)
+        var template = `Please also summarise 4-5 key qualities of this student from their reflection document, and ensure that there is a concrete example of how they exemplify each specific quality through their co-curricular activities.
+###
+[Student’s RI Journey]
+`;
+
+        // Generate the paragraph by replacing placeholders
+        generateText(section, replacements, template);
+      }
+
+      function prepareAndGenerateText4(section) {
+        // Collect input values
+        var sampleParagraph = document.getElementById(
+          `input${section}-1`
+        ).value;
+
+        // Create the replacements array
+        var replacements = [["[sample paragraph]", sampleParagraph]];
+
+        // Define the template for the testimonial (empty for now)
+        var template = `Given the qualities extracted, could you generate one testimonial paragraph on the student's key qualities within the realm of their co-curricular activity? Ensure that the paragraphs have a coherent narrative. Follow the example below, keeping the same tone, style and register. The word count should be within 120-200 words.  Please also ensure that this is written in the past tense.
+###
+[sample paragraph]`;
+
+        // Generate the paragraph by replacing placeholders
+        generateText(section, replacements, template);
+      }
+
+      function prepareAndGenerateText5(section) {
+        // Collect input values
+        var studentRIJourney = document.getElementById(
+          `input${section}-1`
+        ).value;
+
+        // Create the replacements array
+        var replacements = [["[Student’s RI Journey]", studentRIJourney]];
+
+        // Define the template for the testimonial (empty for now)
+        var template = `From the student's reflection below, identify 1-2 key qualities relating to their leadership ability. Please substantiate with evidence from the reflection. 
+###
+[Student’s RI Journey]
+`;
+
+        // Generate the paragraph by replacing placeholders
+        generateText(section, replacements, template);
+      }
+
+      function prepareAndGenerateText6(section) {
+        // Collect input values
+        var sampleParagraph = document.getElementById(
+          `input${section}-1`
+        ).value;
+
+        // Create the replacements array
+        var replacements = [["[sample paragraph]", sampleParagraph]];
+
+        // Define the template for the testimonial (empty for now)
+        var template = `Given the qualities extracted, could you generate one testimonial paragraph on the student's leadership ability? Ensure that the paragraphs have a coherent narrative. Follow the example below, keeping the same tone, style and register. The word count should be no more than 120 words. Please also ensure that this is written in the past tense.
+###
+[sample paragraph]`;
+
+        // Generate the paragraph by replacing placeholders
+        generateText(section, replacements, template);
+      }
+
+      function prepareAndGenerateText7(section) {
+        // Collect input values
+        var studentRIJourney = document.getElementById(
+          `input${section}-1`
+        ).value;
+
+        // Create the replacements array
+        var replacements = [["[Student’s RI Journey]", studentRIJourney]];
+
+        // Define the template for the testimonial (empty for now)
+        var template = `From the student's reflection below, identify 2-3 key qualities relating to their service to the community. Please substantiate with evidence from the reflection, and include what they have learnt from the experience, or how they have grown as a person, or the skills that they have honed. 
+###
+[Student’s RI Journey]
+`;
+
+        // Generate the paragraph by replacing placeholders
+        generateText(section, replacements, template);
+      }
+
+      function prepareAndGenerateText8(section) {
+        // Collect input values
+        var sampleParagraph = document.getElementById(
+          `input${section}-1`
+        ).value;
+
+        // Create the replacements array
+        var replacements = [["[Sample VIA Paragraph]", sampleParagraph]];
+
+        // Define the template for the testimonial (empty for now)
+        var template = `Given the qualities extracted, could you generate one testimonial paragraph on the student's service to the community? Ensure that the paragraphs have a coherent narrative. Follow the example below, keeping the same tone, style and register. The word count should be no more than 120 words. Please also ensure that this is written in the past tense.
+###
+[Sample VIA Paragraph]`;
+
+        // Generate the paragraph by replacing placeholders
+        generateText(section, replacements, template);
+      }
+
+      // This function will be called when the gender in Step 1 changes
+      function syncGenderFromStep1() {
+        var genderStep1 = document.getElementById("gender1").value;
+        document.getElementById("input9-1").value = genderStep1;
+        // updateGenderBasedParagraph();
+      }
+
+      // This function will be called when generating or updating Step 6
+      function prepareAndGenerateText9(section) {
+        updateGenderBasedParagraph(); // Ensure the content updates when the button is clicked
+      }
+
+      // Function to handle the gender-based paragraph generation in Step 6
+      function updateGenderBasedParagraph() {
+        var gender = document.getElementById("input9-1").value; // Get gender from Step 6
+        var sampleParagraph = document.getElementById(`input9-2`).value;
+
+        // Placeholder replacements
+        var replacements = [
+          ["[gender]", gender],
+          ["[sample paragraph]", sampleParagraph],
+        ];
+
+        // Define an empty template for the user to edit later
+        var template = `Given the paragraphs written about the student's abilities and qualities, please generate an introductory paragraph that consolidates and gives an overview of the student's key traits. Please follow the example given, keeping the same tone, style and register. The student we are writing for is [gender] so please ensure that the correct pronouns are used. Please keep the word count to no more than 75 words. Ensure that the language used is not too bombastic. Please use present tense or perfect present tense as appropriate.
+###
+[sample paragraph]
+        `;
+
+        // Replace placeholders in the template
+        generateText(9, replacements, template);
+      }
+
+      // Listen to changes in Step 1 and sync the gender to Step 6
+      document
+        .getElementById("gender1")
+        .addEventListener("change", syncGenderFromStep1);
+
+      function prepareAndGenerateText10(section) {
+        // Collect input values
+        var sampleParagraph = document.getElementById(
+          `input${section}-1`
+        ).value;
+
+        // Create the replacements array
+        var replacements = [["[sample paragraph]", sampleParagraph]];
+
+        // Define the template for the testimonial (empty for now)
+        var template = `Given the paragraphs generated, please craft a concluding paragraph that briefly consolidates and reiterates the student's key traits, and ends off with an affirmation of their value and a positive prediction of their future contribution to society or organisations that they join. Omit any mention of specific examples. Please keep the word count to no more than 65 words. Follow the same register, tone and style as given in the earlier examples. 
+Please use present tense or perfect present tense. 
+###
+[sample paragraph]`;
+
+        // Generate the paragraph by replacing placeholders
+        generateText(section, replacements, template);
+      }
+
+      function prepareAndGenerateText11(section) {
+        // Collect input values
+        var editedTestimonial = document.getElementById(
+          `input${section}-1`
+        ).value;
+
+        // Create the replacements array
+        var replacements = [["[Edited Testimonial]", editedTestimonial]];
+
+        // Define the template for the testimonial (empty for now)
+        var template = `Please review the testimonial below and make minor cosmetic edits to ensure that the entire testimonial is coherent, cohesive, grammatical, and follows the same writing style.
+###
+[Edited Testimonial]`;
+
+        // Generate the paragraph by replacing placeholders
+        generateText(section, replacements, template);
+      }
+
+      function generateText(section, replacements, template) {
+        // Replace each placeholder with its corresponding value from the array
+        replacements.forEach(function (replacement) {
+          var placeholder = replacement[0];
+          template = template.replace(placeholder, replacement[1]);
+        });
+
+        // Update the output text area with the modified paragraph
+        document.getElementById(`output${section}`).value = template;
+      }
+
+      function copyToClipboard(section) {
+        var copyText = document.getElementById(`output${section}`);
+        copyText.select();
+        
+        // Try modern clipboard API first, fallback to execCommand
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(copyText.value).then(() => {
+            showToast('success', 'Copied!', 'Prompt has been copied to clipboard');
+          }).catch(() => {
+            // Fallback to execCommand
+        document.execCommand("copy");
+            showToast('success', 'Copied!', 'Prompt has been copied to clipboard');
+          });
+        } else {
+          // Fallback for older browsers
+          document.execCommand("copy");
+          showToast('success', 'Copied!', 'Prompt has been copied to clipboard');
+        }
+      }
+
+      // Toast notification system
+      function showToast(type = 'success', title = '', message = '', duration = 3000) {
+        const container = document.getElementById('toastContainer');
+        const toastId = 'toast-' + Date.now();
+        
+        const icons = {
+          success: 'bi-check-circle-fill',
+          error: 'bi-exclamation-circle-fill',
+          info: 'bi-info-circle-fill'
+        };
+
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.id = toastId;
+        toast.innerHTML = `
+          <i class="bi ${icons[type]} toast-icon"></i>
+          <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            ${message ? `<div class="toast-message">${message}</div>` : ''}
+          </div>
+          <button class="toast-close" onclick="closeToast('${toastId}')">
+            <i class="bi bi-x"></i>
+          </button>
+        `;
+
+        container.appendChild(toast);
+
+        // Trigger animation
+        setTimeout(() => {
+          toast.classList.add('show');
+        }, 10);
+
+        // Auto remove after duration
+        setTimeout(() => {
+          closeToast(toastId);
+        }, duration);
+      }
+
+      function closeToast(toastId) {
+        const toast = document.getElementById(toastId);
+        if (toast) {
+          toast.classList.remove('show');
+          setTimeout(() => {
+            if (toast.parentNode) {
+              toast.parentNode.removeChild(toast);
+            }
+          }, 300);
+        }
+      }
+
+      // Function to save the testimonial to localStorage
+      function saveTestimonial() {
+        const tag = document.getElementById("testimonialTag").value.trim();
+        const text = document.getElementById("testimonialText").value.trim();
+
+        if (tag && text) {
+          localStorage.setItem(tag, text);
+          showToast('success', 'Saved!', `Testimonial "${tag}" has been saved successfully`);
+          updateSavedTestimonials();
+          document.getElementById("testimonialTag").value = "";
+          document.getElementById("testimonialText").value = "";
+        } else {
+          showToast('error', 'Error', 'Please provide both a tag and testimonial text');
+        }
+      }
+
+      /*   
+      
+      // Function to load a testimonial from localStorage
+      function loadTestimonial() {
+        const select = document.getElementById("savedTestimonials");
+        const selectedTag = select.value;
+
+        if (selectedTag) {
+          const savedText = localStorage.getItem(selectedTag);
+          document.getElementById("testimonialTag").value = selectedTag;
+          document.getElementById("testimonialText").value = savedText;
+        } else {
+          alert("Please select a testimonial to load.");
+        }
+      }
+
+*/
+
+      // Function to load a testimonial from localStorage and open it in the modal
+      function loadTestimonial() {
+        const select = document.getElementById("savedTestimonials");
+        const selectedTag = select.value;
+
+        if (selectedTag) {
+          const savedText = localStorage.getItem(selectedTag);
+          if (savedText) {
+            openTestimonialModal(savedText, selectedTag);
+          } else {
+            showToast('error', 'Error', 'Failed to load testimonial content.');
+          }
+        } else {
+          showToast('warning', 'No Selection', 'Please select a testimonial to preview.');
+        }
+      }
+
+      // Function to delete a testimonial from localStorage
+      function deleteTestimonial() {
+        const select = document.getElementById("savedTestimonials");
+        const selectedTag = select.value;
+
+        if (selectedTag) {
+          // Ask the user for confirmation before deleting
+          const confirmation = confirm(
+            `Are you sure you want to delete the testimonial "${selectedTag}"?`
+          );
+
+          // If user confirms, delete the testimonial
+          if (confirmation) {
+            localStorage.removeItem(selectedTag);
+            showToast('success', 'Deleted!', `Testimonial "${selectedTag}" has been deleted`);
+            updateSavedTestimonials();
+            document.getElementById("testimonialTag").value = "";
+            document.getElementById("testimonialText").value = "";
+          }
+        } else {
+          showToast('error', 'Error', 'Please select a testimonial to delete');
+        }
+      }
+
+      // Function to update the saved testimonials dropdown
+      function updateSavedTestimonials() {
+        const select = document.getElementById("savedTestimonials");
+        select.innerHTML =
+          '<option value="" disabled selected>Select a saved testimonial</option>';
+
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          const option = document.createElement("option");
+          option.value = key;
+          option.textContent = key;
+          select.appendChild(option);
+        }
+      }
+
+      function openStep(index) {
+        var coll = document.getElementsByClassName("collapsible");
+        var contents = document.getElementsByClassName("content");
+        var links = document.querySelectorAll(".nav-link"); // Get all nav links
+
+        // Close all other sections and remove active class from links
+        for (let i = 0; i < coll.length; i++) {
+          coll[i].classList.remove("active");
+          contents[i].style.display = "none";
+          contents[i].classList.remove("show");
+          if (i < links.length) {
+            links[i].classList.remove("active"); // Remove active class from nav links
+          }
+        }
+
+        // Add active class to the clicked nav link
+        if (index < links.length) {
+          links[index].classList.add("active");
+        }
+
+        // Open the clicked section
+        if (coll[index]) {
+          coll[index].classList.add("active");
+          contents[index].style.display = "block";
+          contents[index].classList.add("show");
+
+          // Scroll into view - scroll the main content area smoothly
+          setTimeout(() => {
+            // Find the step section in the main content area
+            const stepSection = coll[index].closest('.step-section');
+            if (stepSection) {
+              // Use native smooth scrolling with proper options
+              stepSection.scrollIntoView({ 
+                behavior: "smooth", 
+                block: "start",
+                inline: "nearest"
+              });
+            } else {
+              // Fallback: scroll the collapsible button itself
+              coll[index].scrollIntoView({ 
+                behavior: "smooth", 
+                block: "start",
+                inline: "nearest"
+              });
+            }
+          }, 200); // Slightly longer timeout for smoother experience
+        }
+      }
+      
+      // Keyboard navigation support
+      document.addEventListener('keydown', function(e) {
+        if (e.altKey) {
+          switch(e.key) {
+            case 'ArrowRight':
+            case 'n':
+              e.preventDefault();
+              navigateToNextStep();
+              break;
+            case 'ArrowLeft': 
+            case 'p':
+              e.preventDefault();
+              navigateToPreviousStep();
+              break;
+          }
+        }
+      });
+      
+      function navigateToNextStep() {
+        const activeLink = document.querySelector('.nav-link.active');
+        if (activeLink) {
+          const allLinks = Array.from(document.querySelectorAll('.nav-link'));
+          const currentIndex = allLinks.indexOf(activeLink);
+          const nextIndex = (currentIndex + 1) % allLinks.length;
+          allLinks[nextIndex].click();
+        }
+      }
+      
+      function navigateToPreviousStep() {
+        const activeLink = document.querySelector('.nav-link.active');
+        if (activeLink) {
+          const allLinks = Array.from(document.querySelectorAll('.nav-link'));
+          const currentIndex = allLinks.indexOf(activeLink);
+          const prevIndex = currentIndex > 0 ? currentIndex - 1 : allLinks.length - 1;
+          allLinks[prevIndex].click();
+        }
+      }
+
+      // Function to toggle visibility of the upload/download section
+      function toggleUploadDownload() {
+        const uploadDownloadSection = document.getElementById(
+          "uploadDownloadSection"
+        );
+
+        // Toggle visibility
+        if (
+          uploadDownloadSection.style.display === "none" ||
+          uploadDownloadSection.style.display === ""
+        ) {
+          uploadDownloadSection.style.display = "block";
+        } else {
+          uploadDownloadSection.style.display = "none";
+        }
+      }
+
+      // Function to download all testimonials as text files
+      function downloadTestimonials() {
+        const testimonialCount = localStorage.length;
+        
+        if (testimonialCount === 0) {
+          showToast('info', 'No Testimonials', 'No saved testimonials to export');
+          return;
+        }
+
+        let downloadedCount = 0;
+
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          const value = localStorage.getItem(key);
+
+          // Create a Blob for the text file
+          const blob = new Blob([value], { type: "text/plain" });
+          const fileName = `${key}.txt`;
+
+          // Create a link element to trigger the download
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = fileName;
+
+          // Trigger the download
+          link.click();
+          downloadedCount++;
+
+          // Revoke the object URL after the download
+          URL.revokeObjectURL(link.href);
+        }
+
+        if (downloadedCount === 1) {
+          showToast('success', 'Export Complete', 'Successfully exported 1 testimonial');
+        } else {
+          showToast('success', 'Export Complete', `Successfully exported ${downloadedCount} testimonials`);
+        }
+      }
+
+      // Function to upload multiple testimonials as text files and store them in localStorage
+      function uploadTestimonials(event) {
+        const files = event.target.files;
+
+        if (!files.length) {
+          showToast('error', 'No Files Selected', 'Please select at least one .txt file to upload');
+          return;
+        }
+
+        let uploadedCount = 0;
+        const totalFiles = files.length;
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          
+          // Check file type
+          if (!file.name.toLowerCase().endsWith('.txt')) {
+            showToast('error', 'Invalid File Type', `File "${file.name}" is not a .txt file`);
+            continue;
+          }
+
+          const reader = new FileReader();
+
+          // Handle the file read event
+          reader.onload = function (e) {
+            const content = e.target.result; // The content of the text file
+            const fileName = file.name.replace(".txt", ""); // Remove the .txt extension to use as key
+
+            // Save to localStorage
+            localStorage.setItem(fileName, content);
+            uploadedCount++;
+            
+            if (uploadedCount === 1 && totalFiles === 1) {
+              showToast('success', 'Upload Complete', `Testimonial "${fileName}" uploaded successfully`);
+            } else if (uploadedCount === totalFiles) {
+              showToast('success', 'Upload Complete', `Successfully uploaded ${uploadedCount} testimonials`);
+            }
+            
+            updateSavedTestimonials(); // Refresh the dropdown
+          };
+
+          reader.onerror = function() {
+            showToast('error', 'Upload Error', `Failed to read file "${file.name}"`);
+          };
+
+          // Read the file as text
+          reader.readAsText(file);
+        }
+        
+        // Clear the file input
+        event.target.value = '';
+      }
+
+      // Function to update the saved testimonials dropdown
+      function updateSavedTestimonials() {
+        const select = document.getElementById("savedTestimonials");
+        select.innerHTML =
+          '<option value="" disabled selected>Select a saved testimonial</option>';
+
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          const option = document.createElement("option");
+          option.value = key;
+          option.textContent = key;
+          select.appendChild(option);
+        }
+      }
+
+      // Function to clear all checkboxes
+      function clearCheckboxes() {
+        const checkboxes = document.querySelectorAll(
+          '#finalCheckForm input[type="checkbox"]'
+        );
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+      }
+
+      function showHoverText() {
+        document.getElementById("hoverText").style.display = "inline";
+      }
+
+      function hideHoverText() {
+        document.getElementById("hoverText").style.display = "none";
+      }
+
+      function countCharacters() {
+        var inputText = document.getElementById("inputText").value;
+        var charCount = inputText.length; // This counts all characters including spaces
+        alert(
+          "The text contains " + charCount + " characters (including spaces)."
+        );
+      }
+
+      
+      // Enhanced collapsible functionality with animations
+      var coll = document.getElementsByClassName("collapsible");
+      
+      for (let i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+          // Collapse all other sections
+          for (let j = 0; j < coll.length; j++) {
+            if (i !== j) {
+              coll[j].classList.remove("active");
+              const content = coll[j].nextElementSibling;
+              content.style.display = "none";
+              content.classList.remove("show");
+            }
+          }
+          
+          // Toggle the clicked section
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          
+          if (content.style.display === "block") {
+            content.style.display = "none";
+            content.classList.remove("show");
+          } else {
+            content.style.display = "block";
+            content.classList.add("show");
+            
+            // Scroll into view with smooth animation
+            setTimeout(() => {
+              this.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 100);
+          }
+        });
+      }
+      
+      // Enhanced button functionality with loading states
+      function showLoading(button) {
+        button.classList.add('loading');
+        button.disabled = true;
+        const originalText = button.textContent;
+        button.dataset.originalText = originalText;
+        button.innerHTML = '<i class="bi bi-hourglass-split"></i> Generating...';
+      }
+      
+      function hideLoading(button) {
+        button.classList.remove('loading');
+        button.disabled = false;
+        button.innerHTML = button.dataset.originalText || button.innerHTML;
+      }
+      
+      // Simple Theme Management System
+      let currentTheme = localStorage.getItem('theme') || 'light';
+      
+      function setTheme(theme) {
+        // Add transition class for smooth animation
+        document.body.classList.add('theme-transition');
+        
+        // Set the theme
+        document.documentElement.setAttribute('data-theme', theme);
+        currentTheme = theme;
+        
+        // Save to localStorage
+        localStorage.setItem('theme', theme);
+        
+        // Remove transition class after animation
+        setTimeout(() => {
+          document.body.classList.remove('theme-transition');
+        }, 600);
+      }
+      
+      function toggleTheme() {
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+      }
+      
+      // Keyboard shortcut for theme toggle
+      document.addEventListener('keydown', function(e) {
+        // Ctrl/Cmd + Shift + T to toggle theme
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'T') {
+          e.preventDefault();
+          toggleTheme();
+        }
+      });
+
+      // Mobile Navigation Functions
+      function toggleMobileNav() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('mobileOverlay');
+        const toggle = document.getElementById('mobileNavToggle');
+        
+        if (sidebar.classList.contains('open')) {
+          closeMobileNav();
+        } else {
+          openMobileNav();
+        }
+      }
+
+      function openMobileNav() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('mobileOverlay');
+        const toggle = document.getElementById('mobileNavToggle');
+        
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+        toggle.innerHTML = '<i class="bi bi-x"></i>';
+        
+        // Prevent body scroll when nav is open
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMobileNav() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('mobileOverlay');
+        const toggle = document.getElementById('mobileNavToggle');
+        
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+        toggle.innerHTML = '<i class="bi bi-list"></i>';
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+      }
+
+      // Close mobile nav when clicking on nav items
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('nav-link') && window.innerWidth <= 768) {
+          setTimeout(closeMobileNav, 300); // Small delay to allow navigation to complete
+        }
+      });
+
+      // Close mobile nav on escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.querySelector('.sidebar').classList.contains('open')) {
+          closeMobileNav();
+        }
+      });
+      
+      // System theme detection
+      function detectSystemTheme() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      }
+      
+      // Listen for system theme changes
+      if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+          if (!localStorage.getItem('theme')) {
+            setTheme(e.matches ? 'dark' : 'light');
+          }
+        });
+      }
+
+      // Sidebar scroll detection with smart indicators
+      function checkSidebarScroll() {
+        const sidebar = document.querySelector('.sidebar');
+        const upIndicator = document.getElementById('scrollIndicatorUp');
+        const downIndicator = document.getElementById('scrollIndicatorDown');
+        
+        if (sidebar && upIndicator && downIndicator) {
+          const hasScroll = sidebar.scrollHeight > sidebar.clientHeight;
+          const scrollTop = sidebar.scrollTop;
+          const scrollHeight = sidebar.scrollHeight;
+          const clientHeight = sidebar.clientHeight;
+          const isAtTop = scrollTop <= 1;
+          const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) <= 1;
+          
+          if (hasScroll) {
+            // Show up indicator if not at top
+            if (!isAtTop) {
+              upIndicator.classList.add('show');
+            } else {
+              upIndicator.classList.remove('show');
+            }
+            
+            // Show down indicator if not at bottom
+            if (!isAtBottom) {
+              downIndicator.classList.add('show');
+            } else {
+              downIndicator.classList.remove('show');
+            }
+          } else {
+            // Hide both indicators if no scroll needed
+            upIndicator.classList.remove('show');
+            downIndicator.classList.remove('show');
+          }
+          
+          // Keep the old has-scroll class for the fade effect
+          if (hasScroll && !isAtBottom) {
+            sidebar.classList.add('has-scroll');
+          } else {
+            sidebar.classList.remove('has-scroll');
+          }
+        }
+      }
+
+      // Add scroll event listener to sidebar
+      function initSidebarScrollListener() {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+          sidebar.addEventListener('scroll', checkSidebarScroll);
+        }
+      }
+
+      // Scroll indicator click handlers
+      function initScrollIndicators() {
+        const sidebar = document.querySelector('.sidebar');
+        const upIndicator = document.getElementById('scrollIndicatorUp');
+        const downIndicator = document.getElementById('scrollIndicatorDown');
+        
+        if (sidebar && upIndicator && downIndicator) {
+          upIndicator.addEventListener('click', () => {
+            sidebar.scrollBy({
+              top: -200,
+              behavior: 'smooth'
+            });
+          });
+          
+          downIndicator.addEventListener('click', () => {
+            sidebar.scrollBy({
+              top: 200,
+              behavior: 'smooth'
+            });
+          });
+          
+          // Add hover tooltips
+          upIndicator.title = 'Scroll up';
+          downIndicator.title = 'Scroll down';
+        }
+      }
+
+      // Testimonial Preview Modal Functions
+      function openTestimonialModal(testimonialText, testimonialName = 'Testimonial') {
+        const modal = document.getElementById('testimonialModal');
+        const content = document.getElementById('modalTestimonialContent');
+        const wordCountElement = document.getElementById('modalWordCount');
+        const charCountElement = document.getElementById('modalCharCount');
+        const titleElement = document.querySelector('.modal-title');
+        
+        // Update modal title
+        titleElement.innerHTML = `<i class="bi bi-eye"></i> ${testimonialName}`;
+        
+        // Format the testimonial text into paragraphs
+        const paragraphs = testimonialText.split('\n\n').filter(p => p.trim() !== '');
+        const formattedContent = paragraphs.map(p => `<p>${p.trim()}</p>`).join('');
+        content.innerHTML = formattedContent;
+        
+        // Calculate word and character counts
+        const wordCount = testimonialText.trim().split(/\s+/).length;
+        const charCount = testimonialText.length;
+        
+        wordCountElement.textContent = wordCount;
+        charCountElement.textContent = charCount;
+        
+        // Show modal
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        
+        // Add escape key listener
+        document.addEventListener('keydown', handleModalEscape);
+        
+        // Add click outside to close
+        modal.addEventListener('click', handleModalClickOutside);
+      }
+
+      function closeTestimonialModal() {
+        const modal = document.getElementById('testimonialModal');
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+        
+        // Remove event listeners
+        document.removeEventListener('keydown', handleModalEscape);
+        modal.removeEventListener('click', handleModalClickOutside);
+      }
+
+      function handleModalEscape(event) {
+        if (event.key === 'Escape') {
+          closeTestimonialModal();
+        }
+      }
+
+      function handleModalClickOutside(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+          closeTestimonialModal();
+        }
+      }
+
+      // Copy testimonial content from modal
+      function copyModalTestimonial() {
+        const content = document.getElementById('modalTestimonialContent');
+        const testimonialName = document.querySelector('.modal-title').textContent.replace('👁️ ', '').replace('Testimonial Preview', '').trim();
+        
+        if (content) {
+          // Get the plain text content without HTML formatting
+          const textContent = content.innerText || content.textContent;
+          
+          // Use the existing copyToClipboard functionality
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textContent).then(() => {
+              showToast('success', 'Copied!', `"${testimonialName}" testimonial copied to clipboard.`);
+            }).catch(err => {
+              console.error('Failed to copy: ', err);
+              fallbackCopy(textContent, testimonialName);
+            });
+          } else {
+            fallbackCopy(textContent, testimonialName);
+          }
+        }
+      }
+
+      // Fallback copy function for modal
+      function fallbackCopy(text, name) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          document.execCommand('copy');
+          showToast('success', 'Copied!', `"${name}" testimonial copied to clipboard.`);
+        } catch (err) {
+          console.error('Fallback copy failed: ', err);
+          showToast('error', 'Copy Failed', 'Unable to copy testimonial to clipboard.');
+        } finally {
+          document.body.removeChild(textArea);
+        }
+      }
+
+      // Initialize saved testimonials dropdown when page loads
+      document.addEventListener('DOMContentLoaded', function() {
+  const currentYear = new Date().getFullYear();
+  const lastYear = currentYear - 1;
+  
+  let text = document.getElementById('output15').value;
+  text = text.replace(/\[this_year\]/g, currentYear);
+  text = text.replace(/\[last_year\]/g, lastYear);
+  document.getElementById('output15').value = text;
+        
+        // Initialize theme
+        if (!localStorage.getItem('theme')) {
+          currentTheme = detectSystemTheme();
+        }
+        setTheme(currentTheme);
+        
+        // Update savedTestimonials
+        updateSavedTestimonials();
+        
+        // Check sidebar scroll
+        checkSidebarScroll();
+        
+        // Initialize sidebar scroll listener
+        initSidebarScrollListener();
+        
+        // Initialize scroll indicators
+        initScrollIndicators();
+        
+        // Recheck on window resize
+        window.addEventListener('resize', checkSidebarScroll);
+});
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

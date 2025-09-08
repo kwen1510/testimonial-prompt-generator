@@ -2615,6 +2615,36 @@ Please also review the testimonial and identify any instances where the specifie
 
     <!-- JavaScript -->
     <script>
+      // App-specific localStorage functions to isolate data
+      const APP_PREFIX = 'ri_testimonial_app_';
+      
+      // Helper functions for app-specific localStorage
+      function appSetItem(key, value) {
+        localStorage.setItem(APP_PREFIX + key, value);
+      }
+      
+      function appGetItem(key) {
+        return localStorage.getItem(APP_PREFIX + key);
+      }
+      
+      function appRemoveItem(key) {
+        localStorage.removeItem(APP_PREFIX + key);
+      }
+      
+      function appGetAllKeys() {
+        const appKeys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith(APP_PREFIX)) {
+            appKeys.push(key.substring(APP_PREFIX.length));
+          }
+        }
+        return appKeys;
+      }
+      
+      function appLength() {
+        return appGetAllKeys().length;
+      }
 
       function prepareAndGenerateText1(section) {
         // Collect values from input fields dynamically based on section
@@ -2937,7 +2967,7 @@ Please use present tense or perfect present tense.
         const text = document.getElementById("testimonialText").value.trim();
 
         if (tag && text) {
-          localStorage.setItem(tag, text);
+          appSetItem(tag, text);
           showToast('success', 'Saved!', `Testimonial "${tag}" has been saved successfully`);
           updateSavedTestimonials();
           document.getElementById("testimonialTag").value = "";
@@ -2971,7 +3001,7 @@ Please use present tense or perfect present tense.
         const selectedTag = select.value;
 
         if (selectedTag) {
-          const savedText = localStorage.getItem(selectedTag);
+          const savedText = appGetItem(selectedTag);
           if (savedText) {
             openTestimonialModal(savedText, selectedTag);
           } else {
@@ -2995,7 +3025,7 @@ Please use present tense or perfect present tense.
 
           // If user confirms, delete the testimonial
           if (confirmation) {
-            localStorage.removeItem(selectedTag);
+            appRemoveItem(selectedTag);
             showToast('success', 'Deleted!', `Testimonial "${selectedTag}" has been deleted`);
             updateSavedTestimonials();
             document.getElementById("testimonialTag").value = "";
@@ -3012,13 +3042,15 @@ Please use present tense or perfect present tense.
         select.innerHTML =
           '<option value="" disabled selected>Select a saved testimonial</option>';
 
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
+        const appKeys = appGetAllKeys();
+        // Filter out non-testimonial keys like 'theme'
+        const testimonialKeys = appKeys.filter(key => key !== 'theme');
+        testimonialKeys.forEach(key => {
           const option = document.createElement("option");
           option.value = key;
           option.textContent = key;
           select.appendChild(option);
-        }
+        });
       }
 
       function openStep(index) {
@@ -3127,7 +3159,10 @@ Please use present tense or perfect present tense.
 
       // Function to download all testimonials as text files
       function downloadTestimonials() {
-        const testimonialCount = localStorage.length;
+        const appKeys = appGetAllKeys();
+        // Filter out non-testimonial keys like 'theme'
+        const testimonialKeys = appKeys.filter(key => key !== 'theme');
+        const testimonialCount = testimonialKeys.length;
         
         if (testimonialCount === 0) {
           showToast('info', 'No Testimonials', 'No saved testimonials to export');
@@ -3136,9 +3171,8 @@ Please use present tense or perfect present tense.
 
         let downloadedCount = 0;
 
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          const value = localStorage.getItem(key);
+        testimonialKeys.forEach(key => {
+          const value = appGetItem(key);
 
           // Create a Blob for the text file
           const blob = new Blob([value], { type: "text/plain" });
@@ -3155,7 +3189,7 @@ Please use present tense or perfect present tense.
 
           // Revoke the object URL after the download
           URL.revokeObjectURL(link.href);
-        }
+        });
 
         if (downloadedCount === 1) {
           showToast('success', 'Export Complete', 'Successfully exported 1 testimonial');
@@ -3193,7 +3227,7 @@ Please use present tense or perfect present tense.
             const fileName = file.name.replace(".txt", ""); // Remove the .txt extension to use as key
 
             // Save to localStorage
-            localStorage.setItem(fileName, content);
+            appSetItem(fileName, content);
             uploadedCount++;
             
             if (uploadedCount === 1 && totalFiles === 1) {
@@ -3223,13 +3257,15 @@ Please use present tense or perfect present tense.
         select.innerHTML =
           '<option value="" disabled selected>Select a saved testimonial</option>';
 
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
+        const appKeys = appGetAllKeys();
+        // Filter out non-testimonial keys like 'theme'
+        const testimonialKeys = appKeys.filter(key => key !== 'theme');
+        testimonialKeys.forEach(key => {
           const option = document.createElement("option");
           option.value = key;
           option.textContent = key;
           select.appendChild(option);
-        }
+        });
       }
 
       // Function to clear all checkboxes
@@ -3309,7 +3345,7 @@ Please use present tense or perfect present tense.
       }
       
       // Simple Theme Management System
-      let currentTheme = localStorage.getItem('theme') || 'light';
+      let currentTheme = appGetItem('theme') || 'light';
       
       function setTheme(theme) {
         // Add transition class for smooth animation
@@ -3320,7 +3356,7 @@ Please use present tense or perfect present tense.
         currentTheme = theme;
         
         // Save to localStorage
-        localStorage.setItem('theme', theme);
+        appSetItem('theme', theme);
         
         // Remove transition class after animation
         setTimeout(() => {
@@ -3406,7 +3442,7 @@ Please use present tense or perfect present tense.
       // Listen for system theme changes
       if (window.matchMedia) {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-          if (!localStorage.getItem('theme')) {
+          if (!appGetItem('theme')) {
             setTheme(e.matches ? 'dark' : 'light');
           }
         });
@@ -3602,7 +3638,7 @@ Please use present tense or perfect present tense.
   document.getElementById('output15').value = text;
         
         // Initialize theme
-        if (!localStorage.getItem('theme')) {
+        if (!appGetItem('theme')) {
           currentTheme = detectSystemTheme();
         }
         setTheme(currentTheme);

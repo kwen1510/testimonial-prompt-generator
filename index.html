@@ -1743,6 +1743,50 @@
         </div>
       </div>
 
+        <!-- Initialisation Card -->
+        <div class="info-card">
+          <div class="card-header">
+            <h5 class="card-title">
+              <i class="bi bi-gear"></i>
+              Initialisation
+            </h5>
+          </div>
+        <div class="card-body">
+          <p class="card-text">
+              Before starting, copy and paste the context-setting prompt below into Pair to prepare the LLM for testimonial writing.
+          </p><br>
+          <button class="btn btn-primary" onclick="copyInitialisationPrompt()">
+            <i class="bi bi-clipboard"></i>
+            Copy Context Prompt
+          </button>
+          <!-- Hidden textarea containing the prompt -->
+          <textarea id="initialisationPrompt" style="display: none;">You are an experienced teacher writing year-end testimonials for graduating students of college age. The testimonials should capture key qualities of each student and substantiate these qualities with clear examples from their involvements and activities in school, showing rather than simply stating traits. Do not use hyperbole or exaggerated language. The student's details will be provided in a separate prompt after these instructions — do not generate a testimonial until those details are given.
+
+Writing Guidelines:
+Use British English throughout.
+
+Write in third person, ensuring consistent pronoun use.
+
+Use past tense for past achievements; present/present perfect for concluding statements about future potential.
+
+Avoid overloading sentences with adjectives; keep language precise and natural.
+
+CRITICAL: Ensure each trait is logically supported by evidence; flag any unclear or incomplete information rather than guessing.
+Testimonials should read as if written by someone who truly knows the student.
+
+Paragraph Structure & Word Counts:
+Introduction (≤75 words): Overview of key traits and personality, logically supported where possible.
+
+Academic/Learning (120–150 words): Highlight diligence, curiosity, self-reflection, resilience, and achievements; show traits through evidence and ensure logical flow from broader dispositions to specific activities.
+
+Co-curricular (120–200 words): Focus on skill development, teamwork, initiative, and growth; integrate examples to support each trait.
+
+Service/Leadership (140–160 words): Emphasise empathy, initiative, leadership, and impact; provide concrete examples to illustrate each quality.
+
+Conclusion (≤65 words): Summarise key traits, affirm the student's value, and project positive future contribution.</textarea>
+        </div>
+      </div>
+
         <!-- Step 1a -->
         <div class="step-section">
           <button class="collapsible">
@@ -1758,6 +1802,10 @@
             <option value="female">Female</option>
           </select>
         </div>
+              <div class="form-group">
+                <label for="studentName1" class="form-label">Student's Name:</label>
+                <input type="text" id="studentName1" class="form-control" placeholder="Enter the student's name">
+              </div>
               <div class="form-group">
                 <label for="journey1" class="form-label">Information about the student's academic work:</label>
           <textarea
@@ -2197,7 +2245,7 @@ Please consolidate the paragraphs into a coherent testimonial, starting with the
 
               <div class="form-group">
                 <label for="output12" class="form-label">Generated Final AI Check Output:</label>
-          <textarea id="output12" rows="3" class="form-control">
+          <textarea id="output12" rows="6" class="form-control">
 The testimonial is a bit inflated in its writing, and makes the student sound a bit more accomplished than he really is. In truth he was quite an average student. Could you reduce the level of accomplishment by about 20% please?
                 </textarea>
           <button class="btn btn-secondary mt-2" onclick="copyToClipboard(12)">
@@ -2293,9 +2341,8 @@ The testimonial is a bit inflated in its writing, and makes the student sound a 
 
               <div class="form-group">
                 <label for="output14" class="form-label">Generated AI Check Output:</label>
-          <textarea id="output14" rows="10" class="form-control">
-Please also review the testimonial and identify any errors based on the criteria below. Highlight or bold the errors in the text: 
-
+          <textarea id="output14" rows="12" class="form-control">
+Please also review the testimonial and identify any errors based on the criteria below. Highlight or bold the errors in the text:
 1. Negative Remarks: Do not include any negative or implied negative remarks.
 2. Comparisons: Avoid comparisons, explicit or implicit, that are at the expense of other students.
 3. Career Choices: Do not mention any possible career choices.
@@ -2305,7 +2352,7 @@ Please also review the testimonial and identify any errors based on the criteria
 7. Tense Usage: Use past tense unless discussing enduring traits, in which case present or present perfect tense is acceptable.
 8. Adjectival Phrases: Avoid awkward adjectival phrases or those that do not logically connect to the next clause.
 9. Pronoun Consistency: Ensure pronouns are used correctly, the student's name is consistently used, and British spelling is applied.
-10. Standardization: Replace "Yr-56" or "Years 5-6" with "Year 5-6".
+10. Standardisation: Replace "Yr-56" or "Years 5-6" with "Year 5-6"
 11. Abbreviations: Explain abbreviations upon first use if they are used more than once throughout the text.
 12. Sentence Length: Break up sentences that are unnecessarily long.
 13. Punctuation and Hyphenation: Ensure accuracy in punctuation, hyphenated words, hyphens, and dashes.
@@ -2347,10 +2394,9 @@ After identifying and highlighting/bolding the errors, provide a brief summary o
 
               <div class="form-group">
                 <label for="output15" class="form-label">Generated Final AI Check Output:</label>
-          <textarea id="output15" rows="10" class="form-control">
+          <textarea id="output15" rows="15" class="form-control">
 Please also review the testimonial and identify any instances where the specified terms and phrases are used incorrectly. Highlight or bold the errors, and then suggest the appropriate replacements according to the guidelines below:
-
-1. Replace 'this year' and/or 'last year' with '[this_year]' and/or '[last_year]' respectively.
+1. Replace 'this year' and/or 'last year' with '2024' and/or '2023' respectively.
 2. Replace 'trainings' with 'training sessions'.
 3. Replace 'JC1 and JC2' with 'Year 5 and 6'.
 4. Replace 'College' with 'school'.
@@ -2359,7 +2405,10 @@ Please also review the testimonial and identify any instances where the specifie
 7. Replace 'CIP (Community Involvement Projects)' with 'VIA (Values in Action)'.
 8. Ensure that 'additionally' and 'also' are not used in the same sentence.
 9. Avoid starting sentences with 'and' or 'because'.
-10. Replace 'Co-Curricular Activity' with 'Co-curricular Activity'
+10. Replace 'Co-Curricular Activity' with 'Co-curricular Activity'.
+11. When using the abbreviation 'CCA', ensure it is preceded by 'Co-curricular Activity' on its first appearance. The full phrase should be written as Co-curricular Activity (CCA). Subsequent uses can be just 'CCA'.
+12. Do not include abbreviations in parentheses for terms that are only used once in the document.
+After identifying and highlighting/bolding the errors, provide a brief summary of the changes made and ensure that the replacements follow the specified guidelines.
                 </textarea>
           <button class="btn btn-secondary mt-2" onclick="copyToClipboard(15)">
                   <i class="bi bi-clipboard"></i>
@@ -2387,8 +2436,7 @@ Please also review the testimonial and identify any instances where the specifie
                 </div>
           <div class="card-body">
             <p class="card-text">
-              Teacher to consolidate the completed text into a Microsoft Word
-              document. Please do a final human check:
+              Teacher to consolidate the completed text into a Microsoft Word document. Please do a final human check:
             </p>
             <form id="finalCheckForm">
               <div class="form-check mb-2">
@@ -2431,17 +2479,6 @@ Please also review the testimonial and identify any instances where the specifie
                 <label class="form-check-label" for="check6">
                   Ensure that no Common Errors (refer to the Testimonial Guide)
                   persist.
-                </label>
-              </div>
-              <div class="form-check mb-2">
-                <input type="checkbox" class="form-check-input" id="check7" />
-                <label class="form-check-label" for="check7">
-                  Please carefully review the drafted testimonial to identify
-                  opportunities where you can highlight personal reflections,
-                        observations, and the student's unique contributions. This
-                  will ensure that the testimonial stands out as a personalised
-                  and meaningful account, rather than just another generic
-                  AI-generated statement.
                 </label>
               </div>
             </form>
@@ -2649,22 +2686,24 @@ Please also review the testimonial and identify any instances where the specifie
       function prepareAndGenerateText1(section) {
         // Collect values from input fields dynamically based on section
         var gender = document.getElementById(`gender${section}`).value;
+        var studentName = document.getElementById(`studentName${section}`).value;
         var journey = document.getElementById(`journey${section}`).value;
 
         // Create the replacements array
         var replacements = [
           ["[gender]", gender],
-          ["[Student's RI Journey]", journey],
+          ["_____", studentName],
+          ["[Student's RI Journey reflections]", journey],
         ];
 
         // Define the template paragraph for section 1
-        var template = `You are an experienced teacher writing year-end testimonials for graduating students of college age. The testimonials should capture key qualities of each student and substantiate these qualities with examples of the student's involvements and activities in school. Do not use hyperbole or exaggerated language. The student here is [gender]; please ensure that the pronouns used are correct and kept consistent. Please use British English throughout. 
+        var template = `You are an experienced teacher writing year-end testimonials for graduating students of college age. The testimonials should capture key qualities of each student and substantiate these qualities with examples of the student's involvements and activities in school. Do not use hyperbole or exaggerated language. The student here is [gender]; please ensure that the pronouns used are correct and kept consistent. Please use British English throughout. You can refer to him/her as _____.
 
-From the student's reflection, teacher’s input and other information below, identify 1-2 key qualities relating to their learning disposition. Please substantiate with evidence from the reflection. 
-
+From the student's reflection, teacher's input and other information below, identify 1-2 key qualities relating to their learning disposition. Please substantiate with evidence from the reflection. Please give greater weight to the teacher's input.
 ###
-
-[Student's RI Journey]
+Teacher's input:
+###
+[Student's RI Journey reflections]
 `;
 
         // Call generateText with the section number, replacements, and template
@@ -2673,16 +2712,19 @@ From the student's reflection, teacher’s input and other information below, id
 
       function prepareAndGenerateText2(section) {
         // Collect input values
-        var sampleParagraph = document.getElementById(
+        var userInput = document.getElementById(
           `input${section}-1`
-        ).value;
+        ).value.trim();
+
+        // Use user input if provided, otherwise use the built-in example
+        var sampleParagraph = userInput || "In class, Oliveria was attentive and participative, offering interesting insights and adding value to class discussions. Her keen interest in current affairs clearly bolstered all the work she put into reading up on her own accord, especially in content outside of the given reading material, giving her depth of knowledge. The level of thought Oliveria put into crafting and supporting her points was also evident in the quality of her written work. However, she was not complacent despite her academic achievements; keen on self-improvement, she would reflect on areas she had difficulty with and seek feedback on how she could improve those specific areas, demonstrating her intellectual humility.";
 
         // Create the replacements array
         var replacements = [["[sample paragraph]", sampleParagraph]];
 
         // Define the template for the testimonial
-        var template = `Given the qualities identified, could you generate one testimonial paragraph on the student's key qualities within the realm of their learning disposition with reference to the examples that support this view? The word count should be no more than 120 words. Please also ensure that this is written in the past tense. 
-        
+        var template = `Generate one testimonial paragraph on the student's key qualities within the realm of their learning disposition. Begin with one or two observations about the student's broader learning traits. Each trait should be illustrated with concrete examples from their academic pursuits, including classroom work, competitions, research, or independent learning. Integrate examples smoothly so the paragraph flows logically, moving from broader dispositions to specific activities, showing rather than telling. Ensure the paragraph is written in the past tense, is coherent and concise, and maintains a professional, warm, and measured tone in the style of the provided example. Word count should be 120–150 words, expanding slightly if the student has many academic activities.
+
 Please follow the example given, keeping the same tone, style and register.
 
 ###
@@ -2701,12 +2743,12 @@ Please follow the example given, keeping the same tone, style and register.
         ).value;
 
         // Create the replacements array
-        var replacements = [["[Student’s RI Journey]", studentRIJourney]];
+        var replacements = [["[Student's RI Journey reflections]", studentRIJourney]];
 
         // Define the template for the testimonial (empty for now)
         var template = `Please also summarise 4-5 key qualities of this student from their reflection document, and ensure that there is a concrete example of how they exemplify each specific quality through their co-curricular activities.
 ###
-[Student’s RI Journey]
+[Student's RI Journey reflections]
 `;
 
         // Generate the paragraph by replacing placeholders
@@ -2715,16 +2757,21 @@ Please follow the example given, keeping the same tone, style and register.
 
       function prepareAndGenerateText4(section) {
         // Collect input values
-        var sampleParagraph = document.getElementById(
+        var userInput = document.getElementById(
           `input${section}-1`
-        ).value;
+        ).value.trim();
+
+        // Use user input if provided, otherwise use the built-in example
+        var sampleParagraph = userInput || "A passionate violinist who put many hours into honing her craft, Nora was a proud member of RI's Chamber Ensemble. She greatly enjoyed forming quartets with her fellow musicians and choosing their own performance pieces, and these practice sessions motivated her to keep improving her playing. During the Covid-19 pandemic, when practice sessions were moved online, Nora contributed to the Ensemble by listening intently to each recording and stitching together each musician's individual recordings into a single piece, and this refined her musicality and appreciation for other instruments. With her commitment to learning and self-improvement, Nora was a valued member whose hard work contributed to the Chamber Ensemble's achievement of a Certificate of Distinction at the Singapore Youth Festival Arts Presentation 2011, as well as the success of their annual concert, Kammermusik 2012. She took a lot of pride in the hard work and intense preparation that the ensemble put into producing classical pieces that were well received by their audience, and the intricate teamwork needed to bring these pieces to fruition.";
 
         // Create the replacements array
         var replacements = [["[sample paragraph]", sampleParagraph]];
 
         // Define the template for the testimonial (empty for now)
-        var template = `Given the qualities extracted, could you generate one testimonial paragraph on the student's key qualities within the realm of their co-curricular activity? Ensure that the paragraphs have a coherent narrative. Follow the example below, keeping the same tone, style and register. The word count should be within 120-200 words.  Please also ensure that this is written in the past tense.
+        var template = `Given the qualities extracted, generate one testimonial paragraph on the student's key qualities within the realm of their co-curricular activity. Begin with one or two observations about their broader dispositions (e.g., commitment, perseverance, teamwork) and ensure each trait is illustrated with concrete examples from their CCA involvement. Integrate examples smoothly to create a coherent narrative, showing how their actions reflected these qualities. The paragraph should be written in the past tense, follow the tone, style, and register of the provided example, and be 120–200 words in length.
+Optional guidance for AI: If the student has multiple CCA involvements or achievements, assess whether the content could be logically divided into two smaller paragraphs with different focuses (for example, one on skill development and teamwork, and one on competitions and achievements). Only suggest this if it improves clarity and flow.
 ###
+
 [sample paragraph]`;
 
         // Generate the paragraph by replacing placeholders
@@ -2738,12 +2785,12 @@ Please follow the example given, keeping the same tone, style and register.
         ).value;
 
         // Create the replacements array
-        var replacements = [["[Student’s RI Journey]", studentRIJourney]];
+        var replacements = [["[Student's RI Journey + Teacher's Input + Any other relevant information]", studentRIJourney]];
 
         // Define the template for the testimonial (empty for now)
-        var template = `From the student's reflection below, identify 1-2 key qualities relating to their leadership ability. Please substantiate with evidence from the reflection. 
+        var template = `From the student's reflection below, identify 1-2 key qualities relating to their leadership ability. Please substantiate with evidence from the reflection.
 ###
-[Student’s RI Journey]
+[Student's RI Journey + Teacher's Input + Any other relevant information]
 `;
 
         // Generate the paragraph by replacing placeholders
@@ -2752,16 +2799,20 @@ Please follow the example given, keeping the same tone, style and register.
 
       function prepareAndGenerateText6(section) {
         // Collect input values
-        var sampleParagraph = document.getElementById(
+        var userInput = document.getElementById(
           `input${section}-1`
-        ).value;
+        ).value.trim();
+
+        // Use user input if provided, otherwise use the built-in example
+        var sampleParagraph = userInput || "With her thoughtfulness and ability to work well with others, Nina was an effective leader, and she stepped up as an Orientation Group Leader (OGL) to incoming students in the 2023 RP Year 5 Orientation. She recognised that the other OGLs in her group had differing leadership styles, and found ways for all of them to collaborate and compromise to best create a wonderful experience for their juniors, demonstrating her maturity and ability to work well in a team. Nina played an integral role in helping her juniors feel safe, welcomed and supported in the school, as she reflected on the challenges they would face in acclimatising to the new environment, and thoughtfully created opportunities for them to forge strong bonds of friendship and support to rely on through their RP journey.";
 
         // Create the replacements array
         var replacements = [["[sample paragraph]", sampleParagraph]];
 
         // Define the template for the testimonial (empty for now)
-        var template = `Given the qualities extracted, could you generate one testimonial paragraph on the student's leadership ability? Ensure that the paragraphs have a coherent narrative. Follow the example below, keeping the same tone, style and register. The word count should be no more than 120 words. Please also ensure that this is written in the past tense.
+        var template = `Given the qualities extracted, generate one testimonial paragraph on the student's leadership abilities. Begin with one or two observations about their broader leadership traits (e.g., initiative, empathy, responsibility) and ensure that each trait is substantiated by a concrete example of how they led or influenced others. The paragraph should present a clear, logical narrative that links traits to evidence, be written in the past tense, follow the tone, style, and register of the provided example, and be no more than 120 words, or up to 150 words if the student has engaged in multiple leadership roles or activities.
 ###
+
 [sample paragraph]`;
 
         // Generate the paragraph by replacing placeholders
@@ -2775,12 +2826,12 @@ Please follow the example given, keeping the same tone, style and register.
         ).value;
 
         // Create the replacements array
-        var replacements = [["[Student’s RI Journey]", studentRIJourney]];
+        var replacements = [["[Student's RI Journey + Teacher's Input + Any other relevant information]", studentRIJourney]];
 
         // Define the template for the testimonial (empty for now)
-        var template = `From the student's reflection below, identify 2-3 key qualities relating to their service to the community. Please substantiate with evidence from the reflection, and include what they have learnt from the experience, or how they have grown as a person, or the skills that they have honed. 
+        var template = `From the student's reflection below, identify 2-3 key qualities relating to their service to the community. Please substantiate with evidence from the reflection, and include what they have learnt from the experience, or how they have grown as a person, or the skills that they have honed.
 ###
-[Student’s RI Journey]
+[Student's RI Journey + Teacher's Input + Any other relevant information]
 `;
 
         // Generate the paragraph by replacing placeholders
@@ -2789,16 +2840,20 @@ Please follow the example given, keeping the same tone, style and register.
 
       function prepareAndGenerateText8(section) {
         // Collect input values
-        var sampleParagraph = document.getElementById(
+        var userInput = document.getElementById(
           `input${section}-1`
-        ).value;
+        ).value.trim();
+
+        // Use user input if provided, otherwise use the built-in example
+        var sampleParagraph = userInput || "While Thea was able to examine issues with objectivity, her perspectives were especially empathetic and compassionate, especially when discussing issues facing underprivileged or marginalised communities. This was surely attributed to her natural empathy for others, as well as her work as a Community Service Director for the Interact Club, where she engaged in no less than five meaningful volunteering projects in her short two years at RI, some of which saw her taking on leadership roles. A few notable leadership roles included leading the Youth Got Heart programme that focused on meaningfully redefining service for youths, and being part of the youth organising team of Relay For Life, an annual global fundraiser and movement to celebrate cancer survivors while supporting current cancer patients, run by the Singapore Cancer Society. These experiences in guiding and empowering others strengthened Thea's communication skills and made her a more confident leader.";
 
         // Create the replacements array
         var replacements = [["[Sample VIA Paragraph]", sampleParagraph]];
 
         // Define the template for the testimonial (empty for now)
-        var template = `Given the qualities extracted, could you generate one testimonial paragraph on the student's service to the community? Ensure that the paragraphs have a coherent narrative. Follow the example below, keeping the same tone, style and register. The word count should be no more than 120 words. Please also ensure that this is written in the past tense.
+        var template = `Given the qualities extracted, generate one testimonial paragraph on the student's service to the community. Begin with one or two observations about their broader service-related qualities (e.g., empathy, commitment, impact) and ensure each trait is illustrated with concrete examples of the student's actions and contributions. Integrate examples into a coherent narrative that logically connects the student's traits with their service achievements. The paragraph should be written in the past tense, follow the tone, style, and register of the provided example, and be no more than 120 words, or up to 150 words if the student has participated in multiple service initiatives.
 ###
+
 [Sample VIA Paragraph]`;
 
         // Generate the paragraph by replacing placeholders
@@ -2820,7 +2875,10 @@ Please follow the example given, keeping the same tone, style and register.
       // Function to handle the gender-based paragraph generation in Step 6
       function updateGenderBasedParagraph() {
         var gender = document.getElementById("input9-1").value; // Get gender from Step 6
-        var sampleParagraph = document.getElementById(`input9-2`).value;
+        var userInput = document.getElementById(`input9-2`).value.trim();
+
+        // Use user input if provided, otherwise use the built-in example
+        var sampleParagraph = userInput || "Nadia was an intelligent and self-motivated individual with an empathetic and people-oriented nature. A student whose positive attitude for learning and life shone through, her cheerful and vivacious nature, as well as strong people skills, endeared her to many, and she certainly added to the class spirit with her outgoing and confident personality.";
 
         // Placeholder replacements
         var replacements = [
@@ -2829,8 +2887,15 @@ Please follow the example given, keeping the same tone, style and register.
         ];
 
         // Define an empty template for the user to edit later
-        var template = `Given the paragraphs written about the student's abilities and qualities, please generate an introductory paragraph that consolidates and gives an overview of the student's key traits. Please follow the example given, keeping the same tone, style and register. The student we are writing for is [gender] so please ensure that the correct pronouns are used. Please keep the word count to no more than 75 words. Ensure that the language used is not too bombastic. Please use present tense or perfect present tense as appropriate.
+        var template = `You are an experienced teacher writing a concise introduction paragraph (≤65 words) for a college-age student's year-end testimonial. The paragraph should:
+1. Focus on 2–4 key traits relating to character, learning disposition, and interpersonal skills (e.g., resilience, intellectual curiosity, adaptability, conscientiousness, collaboration).
+2. Start with broad observations about the student's overall approach to learning and engagement, without going into specific achievements or examples.
+3. Avoid detailed examples, rankings, or awards (these belong in the academic, CCA, leadership, or service paragraphs).
+4. Keep the tone professional, measured, and warm, avoiding overuse of adjectives or abstract statements. Follow the example given.
+5. Write in past tense for past achievements and consistent third-person pronouns.
+6. Ensure the paragraph reflects traits that are substantiated in the student's other sections; do not guess or invent traits.
 ###
+
 [sample paragraph]
         `;
 
@@ -2845,17 +2910,25 @@ Please follow the example given, keeping the same tone, style and register.
 
       function prepareAndGenerateText10(section) {
         // Collect input values
-        var sampleParagraph = document.getElementById(
+        var userInput = document.getElementById(
           `input${section}-1`
-        ).value;
+        ).value.trim();
+
+        // Use user input if provided, otherwise use the built-in example
+        var sampleParagraph = userInput || "Jean's resilience and determination served her well in her drive for self-development, and her genuine care and concern for others made her a pleasure to be around. With her empathetic leadership and strong emotional intelligence, she is poised for success in her future endeavours and will be an asset to any organisation she chooses to join.";
 
         // Create the replacements array
         var replacements = [["[sample paragraph]", sampleParagraph]];
 
         // Define the template for the testimonial (empty for now)
-        var template = `Given the paragraphs generated, please craft a concluding paragraph that briefly consolidates and reiterates the student's key traits, and ends off with an affirmation of their value and a positive prediction of their future contribution to society or organisations that they join. Omit any mention of specific examples. Please keep the word count to no more than 65 words. Follow the same register, tone and style as given in the earlier examples. 
-Please use present tense or perfect present tense. 
-###
+        var template = `You are an experienced teacher writing a concise conclusion paragraph (≤65 words) for a college-age student's year-end testimonial. The paragraph should:
+1. Focus on 2–3 key personal traits that reflect the student's character and interpersonal strengths, as demonstrated across their academic, co-curricular, leadership, and service experiences.
+2. Highlight how these traits positively impacted others or the student's environment.
+3. Include a measured, forward-looking statement about the student's potential or readiness for future endeavours.
+4. Write in past tense for achievements already completed and present/present perfect for future potential.
+5. Keep the tone professional, warm, and succinct, avoiding overuse of adjectives or abstract statements.
+6. Ensure all traits mentioned are supported by evidence in the body of the testimonial; do not invent or exaggerate.
+
 [sample paragraph]`;
 
         // Generate the paragraph by replacing placeholders
@@ -2872,7 +2945,12 @@ Please use present tense or perfect present tense.
         var replacements = [["[Edited Testimonial]", editedTestimonial]];
 
         // Define the template for the testimonial (empty for now)
-        var template = `Please review the testimonial below and make minor cosmetic edits to ensure that the entire testimonial is coherent, cohesive, grammatical, and follows the same writing style.
+        var template = `Please review the testimonial carefully and make minor cosmetic edits as needed. Ensure that:
+1. The paragraph flows logically, with ideas linked clearly and coherently from one sentence to the next.
+2. All traits, examples, and achievements are presented in a way that makes sense and is fully substantiated by the evidence provided.
+3. Grammar, punctuation, and syntax are correct, and British English is used consistently.
+4. The writing style remains consistent throughout, matching the tone, register, and clarity of the original text.
+5. No new information is added or assumed; only edit for clarity, cohesion, and readability.
 ###
 [Edited Testimonial]`;
 
@@ -2894,7 +2972,7 @@ Please use present tense or perfect present tense.
       function copyToClipboard(section) {
         var copyText = document.getElementById(`output${section}`);
         copyText.select();
-        
+
         // Try modern clipboard API first, fallback to execCommand
         if (navigator.clipboard && window.isSecureContext) {
           navigator.clipboard.writeText(copyText.value).then(() => {
@@ -2908,6 +2986,28 @@ Please use present tense or perfect present tense.
           // Fallback for older browsers
           document.execCommand("copy");
           showToast('success', 'Copied!', 'Prompt has been copied to clipboard');
+        }
+      }
+
+      // Copy initialisation prompt function
+      function copyInitialisationPrompt() {
+        var copyText = document.getElementById('initialisationPrompt');
+
+        // Try modern clipboard API first, fallback to execCommand
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(copyText.value).then(() => {
+            showToast('success', 'Copied!', 'Context prompt has been copied to clipboard');
+          }).catch(() => {
+            // Fallback to execCommand
+            copyText.select();
+            document.execCommand("copy");
+            showToast('success', 'Copied!', 'Context prompt has been copied to clipboard');
+          });
+        } else {
+          // Fallback for older browsers
+          copyText.select();
+          document.execCommand("copy");
+          showToast('success', 'Copied!', 'Context prompt has been copied to clipboard');
         }
       }
 
